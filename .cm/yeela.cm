@@ -124,15 +124,6 @@ automations:
 
   # auto-approve PRs that are just doc, formatting, and test changes
   # https://github.com/linear-b/gitstream/blob/main/automations/approve_safe_changes/approve-safe-changes.cm
-  approve_safe_changes:
-    if:
-      - {{ is.formatting or is.docs or is.tests }}
-    run:
-      - action: add-label@v1
-        args:
-          label: 'safe-changes'
-          color: {{ color.purple }}
-      - action: approve@v1
   
   # assign people that are "experts" in the review for better quality reviews
   # https://docs.gitstream.cm/examples/#review-prs-with-code-experts
@@ -202,8 +193,6 @@ automations:
       - action: add-label@v1
         args:
           label: 'new-contibutor'
-          color: {{ color.purple }}
-      - action: add-reviewers@v1
         args:
           team_reviewers: {{ setting.senior_team_reviewer }}
       - action: set-required-approvals@v1
