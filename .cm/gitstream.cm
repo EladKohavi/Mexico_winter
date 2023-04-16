@@ -2,8 +2,7 @@
 # -*- mode: yaml -*-
 
 manifest:
-  version: 1.0
-
+  version: 1.02
 config:
   ignore_files:
     - 'package-lock.json'
