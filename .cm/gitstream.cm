@@ -7,7 +7,7 @@ manifest:
 config:
   ignore_files:
     - 'package-lock.json'
-    - 'blabla.txt'
+
     
 automations:
   my_changes:
