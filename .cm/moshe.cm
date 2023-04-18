@@ -8,8 +8,6 @@ config:
   ignore_files:
     - 'package-lock.json'
     - 'blabla.txt'
-  admin:
-    users: ["EladKohavi", "ShakedZrihen"]
 
 automations:
   my_changes:
