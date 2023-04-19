@@ -18,4 +18,4 @@ automations:
     run: 
       - action: add-label@v1
         args:
-          label: 'eladush'
+          label: 'eladush ha mushhh'
