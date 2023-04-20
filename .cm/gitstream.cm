@@ -3,11 +3,6 @@
 
 manifest:
   version: 1.0
-
-config:
-  ignore_files:
-    - 'package-lock.json'
-    - 'blabla.txt'
     
 automations:
   my_changes:
