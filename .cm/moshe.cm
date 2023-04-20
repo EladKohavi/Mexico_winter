@@ -9,7 +9,7 @@ config:
     - 'package-lock.json'
     - 'blabla.txt'
   admin:
-    users: ["EladKohavi", "ShakedZrihen"]
+    users: ["EladKohavi"]
 
 automations:
   my_changes:
