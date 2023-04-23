@@ -14,7 +14,7 @@ config:
 automations:
   my_changes:
     if:
-      - false
+      - true
     run: 
       - action: add-label@v1
         args:
