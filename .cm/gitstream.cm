@@ -16,4 +16,4 @@ automations:
     run: 
       - action: add-label@v1
         args:
-          label: 'eladush ha mega mush'
+          label: 'eladush ha mush'
