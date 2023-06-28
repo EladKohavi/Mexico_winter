@@ -1,6 +1,6 @@
 # Mexico_winter
 
-Mexico in January was PERFECT!
+Mexo in January was PERFECT!
 yay
 ffffhhhh
 jhjh
