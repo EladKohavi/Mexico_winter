@@ -14,7 +14,7 @@ config:
 automations:
   my_changes111:
     if:
-      - {{ pr.title | includes(term='elad') }} 
+      - {{ pr.title | includes(term='elffad') }} 
     run: 
       - action: add-label@v1
         args:
