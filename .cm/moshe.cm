@@ -21,4 +21,4 @@ automations:
           label: 'eladush'
       - action: add-comment@v1
         args:
-          comment: 'mushmush'
+          comment: 'mushmbbbush'
