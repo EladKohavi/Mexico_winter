@@ -17,6 +17,9 @@ automations:
       - action: add-label@v1
         args:
           label: 'eladush ha mega mush'
+      - action: add-comment@v1
+        args:
+          comment: 'kushkush'
   check_label_type:
       if:
         - true
