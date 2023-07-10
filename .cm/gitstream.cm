@@ -20,14 +20,17 @@ automations:
       - action: add-comment@v1
         args:
           comment: 'kushkush'
+      - action: explain-code-experts@v1
+        args:
+          lt: 14
   check_label_type:
       if:
         - true
       run:
-        - action: explain-code-experts@v1
-          args:
-            lt: 14
         - action: add-comment@v1
           args:
             comment: |
               {{ repo | explainRankByGitBlame(gt=50) }}
+        - action: add-comment@v1
+          args:
+            comment: 'kjfgdskfhgdfskjhgdfsjkh'
