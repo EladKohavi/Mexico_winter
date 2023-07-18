@@ -13,5 +13,5 @@ automations:
           reviewers: {{ repo | codeExperts(gt=10) }}
       - action: explain-code-experts@v1 
         args:
-          gt: 11 
+          gt: 14
   
