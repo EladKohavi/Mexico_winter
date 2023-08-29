@@ -1,12 +1,15 @@
+# -*- mode: yaml -*-
+manifest:
+  version: 1.0
 automations:
-  estimated_time_to_review:
-    if:
-      - true
+  label_unresolved_threads:  
+    if:  
+      - {{ pr.unresolved_threads }}
     run:
-      - action: add-reviewers@v1
-        args:
-          reviewers: ["yeelali14"]
-          wait_for_all_checks: true
       - action: add-label@v1
         args:
-          label: "jkfhgdfsjkhgdfsjkhdgs"
+          label: {{ pr.unresolved_threads }} Unresolved Thread(s)
+          color: {{ colors.yellow }}
+      
+colors:
+  yellow: 'fbca04'
