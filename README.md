@@ -1,4 +1,3 @@
-gfdsgdsf# Mexico_winter
-gfdsgfdsgfsd
-#Mexico in January was PERFECT!
-gfdsgfdgdsf
+# Mexico_winter
+
+Mexico in January was PERFECT!
