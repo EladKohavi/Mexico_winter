@@ -4,7 +4,7 @@ on:
 automations:
   eladush_files:
     if:
-      - {{ pr.labels | match(list=['Core', 'Mobile', 'UI']) | some }}
+      - {{ pr.labels | match(list=['Core', 'UI']) | some }}
     run:
       - action: add-label@v1
         args:
