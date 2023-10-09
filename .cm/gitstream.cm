@@ -13,6 +13,6 @@ automations:
           color: {{ 'E94637' if (calc.etr >= 20) else ('FBBD10' if (calc.etr >= 5) else '36A853') }}
       - action: add-comment@v1
         args:
-          comment: Welcome Eladush
+          comment: Welcome Eladush!
 calc:
   etr: {{ branch | estimatedReviewTime }}
