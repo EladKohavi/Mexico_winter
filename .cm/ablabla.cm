@@ -16,10 +16,6 @@ automations:
       - action: add-comment@v1
         args:
           comment: "{{ pr.number }} okokok"
-      - action: update-check@v1
-        args:
-          check_name: 'e2e'
-          status: 'completed'
-          conclusion: 'skipped'
+
 calc:
   etr: {{ branch | estimatedReviewTime }}
