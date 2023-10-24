@@ -2,5 +2,4 @@
 
 Mexico in January was PERFECT!
 flying tiger
-gfdgfds
 lkjdfgh
