@@ -16,6 +16,9 @@ automations:
       - action: add-comment@v1
         args:
           comment: "{{ pr.number }} okokok"
-
+      - action: request-changes@v1
+        args:
+          comment: |
+            You have used deprecated API `oldFetch`, use `newFetch` instead.
 calc:
   etr: {{ branch | estimatedReviewTime }}
