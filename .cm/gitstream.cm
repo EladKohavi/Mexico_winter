@@ -11,14 +11,5 @@ automations:
         args:
           label: "no-problem!"
           color: {{ 'E94637' if (calc.etr >= 20) else ('FBBD10' if (calc.etr >= 5) else '36A853') }}
-
-  kishkush_change:
-    if:
-      - {{ files | match(list=['kishkush.txt']) | some }}
-    run:
-      - action: add-github-check@v1
-        args:
-          check_name: 'e2e'
-          conclusion: 'skipped'
 calc:
   etr: {{ branch | estimatedReviewTime }}
