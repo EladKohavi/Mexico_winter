@@ -1,18 +1,25 @@
-# -*- mode: yaml -*-
 automations:
-  assign_code_experts:
-    # Triggered when someone applies a suggest-reviewer label to a PR.
-    if:
+  code_experts:
+    if: 
       - true
-    # Identify the best experts to assign for review and post a comment that explains why
-    # More info about code experts
-    # https://docs.gitstream.cm/filter-functions/#codeexperts
     run:
       - action: add-reviewers@v1
         args:
-          reviewers: yeelali14
-          wait_for_all_checks: true
+          reviewers: most-experts
+
+      - action: add-reviewers@v1
+        args:
+          reviewers: non-experts
+
       - action: explain-code-experts@v1 
         args:
           gt: 10 
-  
+
+      - action: explain-code-experts@v1 
+        args:
+          lt: 10 
+
+
+most-experts: {{ repo | codeExperts(gt=10) }}
+least-experts: {{ repo | codeExperts(lt=10) }}
+non-experts: {{ least-experts | difference(list= most-experts) }} 
