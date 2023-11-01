@@ -5,11 +5,11 @@ automations:
     run:
       - action: add-reviewers@v1
         args:
-          reviewers: most-experts
+          reviewers: {{most-experts}}
 
       - action: add-reviewers@v1
         args:
-          reviewers: non-experts
+          reviewers: {{non-experts}}
 
       - action: explain-code-experts@v1 
         args:
@@ -18,6 +18,21 @@ automations:
       - action: explain-code-experts@v1 
         args:
           lt: 10 
+
+      - action: add-comment@v1
+        args:
+          comment: |
+            Most: {{ most-experts }}
+
+      - action: add-comment@v1
+        args:
+          comment: |
+            Least: {{ least-experts }}
+
+      - action: add-comment@v1
+        args:
+          comment: |
+            Non: {{ non-experts }}
 
 
 most-experts: {{ repo | codeExperts(gt=10) }}
