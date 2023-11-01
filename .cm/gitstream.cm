@@ -14,6 +14,6 @@ automations:
       - action: add-github-check@v1
         args:
           check_name: e2e
-          conclusion: timed_out
+          conclusion: skipped
 calc:
   etr: {{ branch | estimatedReviewTime }}
