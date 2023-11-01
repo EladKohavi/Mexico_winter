@@ -9,7 +9,7 @@ automations:
 
       - action: add-reviewers@v1
         args:
-          reviewers: {{ repo | codeExperts(gt=10) }}
+          reviewers: {{ repo | codeExperts(lt=50) | difference(list= (repo | codeExperts(gt=10))) }}
 
       - action: add-reviewers@v1
         args:
@@ -21,7 +21,7 @@ automations:
 
       - action: explain-code-experts@v1 
         args:
-          lt: 10 
+          lt: 50 
 
       - action: add-comment@v1
         args:
