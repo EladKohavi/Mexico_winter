@@ -21,7 +21,7 @@ automations:
 
       - action: explain-code-experts@v1 
         args:
-          lt: 50 
+          lt: 80 
 
       - action: add-comment@v1
         args:
@@ -37,6 +37,11 @@ automations:
         args:
           comment: |
             Non: {{ non-experts }}
+
+      - action: add-comment@v1
+        args:
+          comment: |
+            Non: {{ repo | codeExperts(gt=10) }}
 
 
 most-experts: {{ repo | codeExperts(gt=10) }}
