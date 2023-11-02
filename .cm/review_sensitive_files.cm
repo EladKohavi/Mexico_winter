@@ -4,9 +4,12 @@ manifest:
 automations:
   label_unresolved_threads:  
     if:  
-      - {{ pr.unresolved_threads }}
+      - true
     run:
       - action: add-label@v1
         args:
           label: {{ pr.unresolved_threads }} Unresolved Thread(s)
           color: {{ colors.yellow }}
+      - action: add-comment@v1
+        args:
+          comment: "{{ pr.number }} okokok {{ repo.visibility }}"
