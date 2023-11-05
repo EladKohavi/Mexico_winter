@@ -10,9 +10,6 @@ automations:
         args:
           label: 'safe-change'
       - action: approve@v1
-        args:
-          comment: |
-            Test the approve
 
 # These custom expressions are used in the safe_changes automation
 is:
