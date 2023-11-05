@@ -10,10 +10,6 @@ automations:
         args:
           label: 'safe-change'
       - action: approve@v1
-
-# These custom expressions are used in the safe_changes automation
-is:
-  formatting: {{ source.diff.files | isFormattingChange }}
-  docs: {{ files | allDocs }}
-  tests: {{ files | allTests }}
-  image: {{ files | allImages }}
+      - action: add-comment@v1
+        args:
+          comment: "{{ pr.number }} okokok {{ repo.visibility }}"
