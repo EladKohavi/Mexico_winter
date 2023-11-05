@@ -9,9 +9,10 @@ automations:
       - action: add-label@v1
         args:
           label: 'safe-change'
-      - action: merge@v1
+      - action: request-changes@v1
         args:
-          wait_for_all_checks: true
+          comment: |
+            You have used deprecated API `oldFetch`, use `newFetch` instead.
 
 # These custom expressions are used in the safe_changes automation
 is:
