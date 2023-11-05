@@ -9,10 +9,10 @@ automations:
       - action: add-label@v1
         args:
           label: 'safe-change'
-      - action: request-changes@v1
+      - action: approve@v1
         args:
           comment: |
-            You have used deprecated API `oldFetch`, use `newFetch` instead.
+            Test the approve
 
 # These custom expressions are used in the safe_changes automation
 is:
