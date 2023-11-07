@@ -1,15 +1,15 @@
 # -*- mode: yaml -*-
 manifest:
   version: 1.0
+
 automations:
-  label_unresolved_threads:  
-    if:  
-      - true
+  tester:
+    on:
+      - merge
+    if:
+      - {{ number_of_tests > 0 }}
     run:
       - action: add-label@v1
         args:
-          label: {{ pr.unresolved_threads }} Unresolved Thread(s)
+          label: "oops"
           color: {{ colors.yellow }}
-      - action: merge@v1
-        args:
-          wait_for_all_checks: true
