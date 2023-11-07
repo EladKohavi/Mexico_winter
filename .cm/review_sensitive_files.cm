@@ -13,3 +13,5 @@ automations:
         args:
           label: "oops"
           color: {{ colors.yellow }}
+
+number_of_tests: {{ source | countTests }}
