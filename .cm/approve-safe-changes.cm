@@ -9,7 +9,7 @@ automations:
       - action: add-label@v1
         args:
           label: 'safe-change'
-      - action: approve@v1
+      - action: merge@v1
       - action: add-comment@v1
         args:
           comment: "{{ pr.number }} okokok {{ repo.visibility }}"
