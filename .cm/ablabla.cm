@@ -2,8 +2,7 @@
 manifest:
   version: 1.0
 on:
-  - pr_created
-  - commit
+  - label_added
 
 automations:
   eladush_files:
@@ -17,6 +16,7 @@ automations:
       - action: add-comment@v1
         args:
           comment: "{{ pr.number }} okokok {{ repo.visibility }}"
+      - action: approve@v1
 
 calc:
   etr: {{ branch | estimatedReviewTime }}
