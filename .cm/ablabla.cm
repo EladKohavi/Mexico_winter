@@ -2,7 +2,7 @@
 manifest:
   version: 1.0
 on:
-  - label_added
+  - commit
 
 automations:
   eladush_files:
