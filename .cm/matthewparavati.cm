@@ -1,0 +1,139 @@
+# -*- mode: yaml -*-
+
+manifest:
+  version: 1.0
+
+automations:
+  estimated_time_to_review:
+    if:
+      - true
+    run:
+      - action: add-label@v1
+        args:
+          label: "~{{ calc.etr }} min review"
+          color: {{ 'E94637' if (calc.etr >= 20) else ('FBBD10' if (calc.etr >= 5) else '36A853') }}
+  needs_one_review:
+    if:
+      - {{ not has.sensitive_files }}
+      - {{ is.quick_review }}
+      - {{ approvals.zero }}
+    run:
+      - action: add-label@v1
+        args: 
+          label: ⏳ Waiting for 1 reviewer
+          color: '#73067C'
+      - action: add-reviewers@v1
+        args:
+          reviewers: [Popmenu/mobile-app-devs]
+          unless_reviewers_set: true
+  needs_two_reviews:
+    if:
+      - {{ is.long_review or has.sensitive_files }}
+      - {{ approvals.ltTwo }}
+    run:
+      - action: add-label@v1
+        args: 
+          label: {{ '⏳ Waiting for 2 reviewers' if (approvals.zero) else '⏳ Waiting for 1 reviewer' }}
+          color: '#73067C'
+      - action: add-reviewers@v1
+        args:
+          reviewers: [Popmenu/mobile-app-devs]
+          unless_reviewers_set: true
+  deleted:
+    if:
+      - {{ has.deleted_files }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 🗑️ Deleted files
+          color: '#DF9C04'
+  missing_sc_ticket:
+    if:
+      - {{ not sc_ticket.comment }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 🎫 Missing SC Ticket
+          color: '#FBCA02'
+  unresolved_threads:
+    if:
+      - {{ pr.status == 'open' }}
+      - {{ pr.unresolved_threads > 0 }}
+    run:
+      - action: add-label@v1
+        args:
+          label: 🚨 Unresolved thread(s)
+          color: '#EC560D'
+  sensitive_file_change_review:
+    if: 
+      - {{ has.sensitive_files }}
+    run:
+      - action: set-required-approvals@v1
+        args:
+          approvals: 2
+  two_reviews:
+    if: 
+      - {{ is.long_review or has.sensitive_files }}
+    run:
+      - action: set-required-approvals@v1
+        args:
+          approvals: 2
+  do_not_merge:
+    if:
+      - {{ has.do_not_merge_label }}
+    run:
+      - action: require-reviewers@v1
+        args:
+          reviewers: [john-dugan]
+          also_assign: false
+  ready_to_merge_one_approval_pr:
+    if:
+      - {{ not has.sensitive_files }}
+      - {{ is.quick_review }}
+      - {{ not has.do_not_merge_label }}
+      - {{ approvals.gtZero }}
+    run:
+      - action: add-label@v1
+        args:
+          label: ✌️ Ready to merge
+          color: '#219944'
+  ready_to_merge_two_approval_pr:
+    if:
+      - {{ is.long_review or has.sensitive_files }}
+      - {{ not has.do_not_merge_label }}
+      - {{ approvals.gtOne }}
+    run:
+      - action: add-label@v1
+        args:
+          label: ✌️ Ready to merge
+          color: '#219944'
+  
+calc:
+  etr: {{ branch | estimatedReviewTime }}
+has:
+  deleted_files: {{ source.diff.files | map(attr='new_file') | match(term='/dev/null') | some }}
+  sensitive_files: {{ files | match(list=sensitive) | some }}
+  do_not_merge_label: {{ pr.labels | match(term='Do not merge') | some }}
+is:
+  safe_change: {{ (source.diff.files | isFormattingChange) or (files | allDocs) or (files | allTests) or (files | allImages) }}
+  quick_review: {{ files | length <= 7 and calc.etr <= 5 }}
+  long_review: {{ files | length > 7 or calc.etr > 5 }}
+approvals:
+  zero: {{ pr.approvals | length == 0 }}
+  gtZero: {{ pr.approvals | length > 0 }}
+  gtOne: {{ pr.approvals | length > 1 }}
+  ltTwo: {{ pr.approvals | length < 2 }}
+sc_ticket:
+  comment: {{ pr.comments | match(attr='content', term='Shortcut Story') | some }}
+sensitive:
+  - App.tsx
+  - AppRoot.tsx
+config:
+  ignore_files:
+    - 'yarn.lock'
+    - 'ios/*.lock'
+    - 'android/*.lock'
+    - 'src/graphql/schema.json'
+    - 'src/__generated__/types.ts'
+    - 'src/i18n/messages/*.json'
+    - '__tests__/**/*.snap'
