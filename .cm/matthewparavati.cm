@@ -12,12 +12,6 @@ automations:
         args:
           comment: | 
             branch diff size {{ branch.diff.size }}
-      - action: add-comment@v1
-        args:
-          comment: deletions in package-lock.json - {{ changes.ignored_files_line_deletions }}
-      - action: add-comment@v1
-        args:
-          comment: total is - {{ changes.ignored_files_line_changes }}
 
   inform_about_pr_size_best_practices:
     if:
@@ -45,10 +39,6 @@ automations:
             Please read [this article]({{ linearb_data.url_explaining_pr_size }}) for more information.
             {% endif %}
             ![Performance Level Explained]({{ linearb_data.url_performance_level_image }})
-      - action: add-label@v1
-        args:
-          label: '{% if is.elite_size_pr %}PR Size: Elite{% endif %}{% if is.good_size_pr %}PR Size: Good{% endif %}{% if is.fair_size_pr %}PR Size: Fair{% endif %}{% if is.needs_focus_size_pr %}PR Size: Needs Focus{% endif %}'
-          color: '{% if is.elite_size_pr %}{{ colors.green }}{% endif %}{% if is.good_size_pr %}{{ colors.blue }}{% endif %}{% if is.fair_size_pr %}{{ colors.orange }}{% endif %}{% if is.needs_focus_size_pr %}{{ colors.red }}{% endif %}'
   
   reject_need_focus_prs:
     if:
