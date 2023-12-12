@@ -10,7 +10,8 @@ automations:
     run:
       - action: add-comment@v1
         args:
-          comment: branch diff size: - {{ branch.diff.size }}
+          comment: | 
+            branch diff size {{ branch.diff.size }}
       - action: add-comment@v1
         args:
           comment: deletions in package-lock.json - {{ changes.ignored_files_line_deletions }}
