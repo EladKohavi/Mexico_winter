@@ -1,0 +1,14 @@
+# -*- mode: yaml -*-
+
+manifest:
+  version: 1.0
+
+automations:
+  banana_check:
+    if:
+      - {{ pr.description | includes(term='password') }}
+    run:
+      - action: add-comment@v1
+        args:
+          comment: |
+            The mentioned keys are: {{ pr.description | extractKeys }}
