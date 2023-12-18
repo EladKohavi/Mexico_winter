@@ -1,3 +1,3 @@
 module.exports = (text) => {
-  return text.match(/ password=[^\s-]* /g);
+  return text.match(/password=([^\s]+)/g);
 }
