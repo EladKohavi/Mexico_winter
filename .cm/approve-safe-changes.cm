@@ -10,6 +10,9 @@ automations:
         args:
           label: 'safe-change'
       - action: merge@v1
+        args:
+          wait_for_all_checks: true
+          rebase_on_merge: true
       - action: add-comment@v1
         args:
           comment: "{{ pr.number }} okokok {{ repo.visibility }}"
