@@ -8,10 +8,6 @@ automations:
     # More info about code experts
     # https://docs.gitstream.cm/filter-functions/#codeexperts
     run:
-      - action: add-reviewers@v1
-        args:
-          reviewers: yeelali14
-          wait_for_all_checks: true
       - action: explain-code-experts@v1 
         args:
           gt: 10 
