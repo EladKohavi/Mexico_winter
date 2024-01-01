@@ -10,10 +10,11 @@ automations:
         args:
           label: 'safe-change'
       - action: approve@v1
+      - action: add-comment@v1
+        args:
+          comment: |
+            This PR is considered a safe change and has been automatically approved.
       - action: merge@v1
         args:
           wait_for_all_checks: true
           rebase_on_merge: true
-      - action: add-comment@v1
-        args:
-          comment: "{{ pr.number }} okokok {{ repo.visibility }}"
