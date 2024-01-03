@@ -1,2 +1,2 @@
 A simple README file
-alone on the sea
+kiss from a rose on the gray
