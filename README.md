@@ -1,2 +1,2 @@
 A simple README file
-I HATE YOU SO MUCH RIGHT NOW
+alone on the sea
