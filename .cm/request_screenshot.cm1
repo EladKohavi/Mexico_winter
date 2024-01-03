@@ -10,6 +10,7 @@ automations:
   request_screenshot:
     # Triggered for PRs that lack an image file or link to an image in the PR description
     if:
+      - {{ files | reject(regex=r/src\/components\/.*\.test.tsx$|src\/components\/.*\.story.tsx$/) | match(regex=r/src\/components\/.*\.tsx$/) | some }}
       - {{ not (has.screenshot_link or has.image_uploaded) }}
     run:
       - action: add-label@v1
@@ -23,4 +24,4 @@ automations:
 
 has:
   screenshot_link: {{ pr.description | includes(regex=r/!\[(?!workerB\]).*?\]\(.*?(jpg|svg|png|gif|psd|mov).*?\)/) }}
-  image_uploaded: {{ pr.description | includes(regex=r/<img.*src.*(jpg|svg|png|gif|psd|mov).*>/) }}
+  image_uploaded: {{ pr.description | includes(regex=r/<img.*src.*(jpg|svg|png|gif|psd|mov|assets).*>/) }}
