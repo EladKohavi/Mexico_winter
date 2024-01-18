@@ -1,4 +1,7 @@
 # -*- mode: yaml -*-
+on:
+  - commit
+
 automations:
   assign_code_experts:
     # Triggered when someone applies a suggest-reviewer label to a PR.
@@ -11,4 +14,8 @@ automations:
       - action: explain-code-experts@v1 
         args:
           gt: 10 
+
+      - action: add-label@v1
+        args:
+          label: triggered by commit
   
