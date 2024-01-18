@@ -5,13 +5,11 @@ manifest:
 automations:
   tester:
     on:
-      - merge
+      - pr_crated
     if:
-      - {{ number_of_tests > 0 }}
+      - true
     run:
       - action: add-label@v1
         args:
-          label: "oops"
+          label: "triggered by pr created"
           color: {{ colors.yellow }}
-
-number_of_tests: {{ source | countTests }}
