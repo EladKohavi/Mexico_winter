@@ -5,7 +5,7 @@ manifest:
 automations:
   tester:
     on:
-      - pr_crated
+      - pr_created
     if:
       - true
     run:
