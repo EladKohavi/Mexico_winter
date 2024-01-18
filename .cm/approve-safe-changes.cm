@@ -14,7 +14,3 @@ automations:
         args:
           comment: |
             This PR is considered a safe change and has been automatically approved.
-      - action: merge@v1
-        args:
-          wait_for_all_checks: true
-          rebase_on_merge: true
