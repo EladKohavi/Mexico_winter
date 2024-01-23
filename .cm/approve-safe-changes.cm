@@ -3,7 +3,7 @@ automations:
   safe_changes:
     # Triggered for any changes that only affect formatting, documentation, tests, or images
     if:
-      - true
+      - {{ files | match(list=['README.md']) | every }}
     # Apply a safe change label, approve the PR and explain why in a comment.
     run: 
       - action: add-label@v1
