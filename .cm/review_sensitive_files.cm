@@ -12,4 +12,4 @@ automations:
       - action: add-label@v1
         args:
           label: "triggered by pr created"
-          color: {{ colors.yellow }}
+          color: #660066
