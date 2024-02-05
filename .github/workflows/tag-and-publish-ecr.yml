@@ -1,0 +1,41 @@
+name: Create Tag on Merge and Publish it to ECR
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  create_tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get latest tag
+        id: get_latest_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+
+      - name: Increment tag
+        id: increment_tag
+        run: |
+          # Extract major, minor, and patch versions
+          IFS='.' read -r -a versions <<< "${{ steps.get_latest_tag.outputs.tag }}"
+
+          major=${versions[0]}
+          minor=${versions[1]}
+          patch=${versions[2]}
+
+          # Increment the patch version
+          patch=$((patch + 1))
+
+          # Create the new tag
+          new_tag="${major}.${minor}.${patch}"
+          echo "::set-output name=new_tag::${new_tag}"
+
+      - name: Create and push new tag
+        run: |
+          git tag "${{ steps.increment_tag.outputs.new_tag }}"
+          git push origin "${{ steps.increment_tag.outputs.new_tag }}"
+
