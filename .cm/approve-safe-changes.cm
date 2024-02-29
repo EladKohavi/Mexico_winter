@@ -9,7 +9,10 @@ automations:
       - action: add-label@v1
         args:
           label: 'safe-change'
-      - action: approve@v1
+      - action: add-reviewers@v1
+        args:
+          reviewers: [yeelali]
+          wait_for_all_checks: true
       - action: add-comment@v1
         args:
           comment: |
