@@ -1,0 +1,19 @@
+# -*- mode: yaml -*-
+automations:
+  safe_changes:
+    # Triggered for any changes that only affect formatting, documentation, tests, or images
+    if:
+      - {{ files | match(list=['README.md']) | every }}
+    # Apply a safe change label, approve the PR and explain why in a comment.
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'safe-change'
+      - action: add-reviewers@v1
+        args:
+          reviewers: [yeelali14]
+          wait_for_all_checks: true
+      - action: add-comment@v1
+        args:
+          comment: |
+            This PR is considered a safe change and has been automatically approved.
