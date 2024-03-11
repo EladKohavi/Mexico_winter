@@ -10,7 +10,7 @@ automations:
         args:
           workflow: .github/workflows/example.yml
           owner: EladKohavi
-          repo: Mexico_winter
+          repo: CM
           ref: main
           inputs: {{ inputs_var | dump }}
           check_name: "cypress-e2e"
