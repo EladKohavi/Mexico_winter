@@ -9,8 +9,8 @@ automations:
       - action: run-github-workflow@v1
         args:
           workflow: .github/workflows/example.yml
-          owner: yeelali14
-          repo: pasha
+          owner: EladKohavi
+          repo: Mexico_winter
           ref: main
           inputs: {{ inputs_var | dump }}
           check_name: "cypress-e2e"
