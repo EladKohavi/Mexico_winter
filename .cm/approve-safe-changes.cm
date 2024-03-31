@@ -79,15 +79,7 @@ automations:
         args:
           reviewers:
             [
-              'orielz',
-              'Fadikhayo1995',
-              'KerenLinearB',
-              'flomermer',
-              'eidellav',
-              'ShakedZrihen',
-              'ShaniBelisha',
-              'omarcovitch',
-              'YovelElad'
+              'yeelali14'
             ]
       - action: add-labels@v1
         args:
