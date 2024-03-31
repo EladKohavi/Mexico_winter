@@ -70,20 +70,6 @@ automations:
       - action: explain-code-experts@v1 
         args:
           gt: 10 
-      
-  senior_review:
-    if:
-      - true
-    run:
-      - action: require-reviewers@v1
-        args:
-          reviewers:
-            [
-              'yeelali14'
-            ]
-      - action: add-labels@v1
-        args:
-          labels: ['senior-reviewer']
 
 
 is:
