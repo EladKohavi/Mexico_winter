@@ -1,2 +1,2 @@
-console.log("bug");
+console.log("Shock");
 Recreate the bug
