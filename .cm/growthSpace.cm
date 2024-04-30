@@ -57,7 +57,6 @@ automations:
   approve_and_merge_audit_fix_prs:
     if:
       - {{ branch.name | includes(term="audit/") }}
-      - {{ pr.author | includes(term="gr0wth-b0t") }}
     run:
       - action: approve@v1
       - action: add-label@v1
