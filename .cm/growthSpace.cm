@@ -1,0 +1,199 @@
+# View the gitStream quickstart for more examples: https://docs.gitstream.cm/quick-start/
+manifest:
+  version: 1.0
+
+on:
+  - pr_created
+  - commit
+
+automations:
+  # Add a label that indicates how many minutes it will take to review the PR.
+  estimated_time_to_review: 
+    if:
+      - true
+    run:
+      - action: add-label@v1
+      # etr is defined in the last section of this example
+        args:
+          label: "{{ calc.etr }} min review"
+          color: {{ colors.longPr if (calc.etr >= 20) else (colors.mediumPr if (calc.etr >= 5) else colors.shortPr) }}
+  # Post a comment that lists the best experts for the files that were modified.
+  explain_code_experts:
+    if:
+      - {{ not (pr.author | includes(term="gr0wth-b0t")) }}
+    run:
+      - action: explain-code-experts@v1 
+        args:
+          gt: 10
+
+  label_missing_project_tracker:
+    if:
+      - {{ not (pr.author | includes(term="gr0wth-b0t")) }}
+      - {{ not (has[provider].ticket_in_desc or has[provider].ticket_in_branch) }}
+    run:
+      - action: add-label@v1
+        args:
+          label: "⚠️ Missing {{ provider }} Ticket"
+          color: '{{ colors.red }}'
+      - action: add-comment@v1
+        args:
+          comment: Please provide a link to the associated ticket in {{ provider }}.
+
+  auto_approve_safe_changes:
+    if:
+      - {{ not (pr.author | includes(term="gr0wth-b0t")) }}
+      - {{ is.formatting or is.docs or is.tests or is.images }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'safe-change'
+          color: '{{ colors.blue }}'
+      - action: approve@v1
+      - action: add-comment@v1
+        args:
+          comment: |
+            This PR is considered a safe change and has been automatically approved.
+
+  approve_and_merge_audit_fix_prs:
+    if:
+      - {{ branch.name | includes(term="audit/") }}
+      - {{ pr.author | includes(term="gr0wth-b0t") }}
+    run:
+      - action: approve@v1
+      - action: add-label@v1
+        args:
+          label: 'approved-audit-fix'
+          color: '{{ colors.green }}'
+      - action: merge@v1
+
+  approve_and_merge_dependabot_prs:
+    if:
+      - {{ branch.name | includes(term="dependabot") }}
+      - {{ pr.author | includes(term="dependabot") }}
+    run:
+      - action: approve@v1
+      - action: add-label@v1
+        args:
+          label: 'approved-dependabot'
+          color: '{{ colors.green }}'
+      - action: merge@v1
+
+  approve_release_prs:
+    if:
+      - {{ branch.name | includes(term="release/") }}
+      - {{ pr.author | includes(term="gr0wth-b0t") }}
+      - {{ branch.base | includes(term="master")}}
+    run:
+      - action: approve@v1
+      - action: add-label@v1
+        args:
+          label: 'approved-release'
+          color: '{{ colors.green }}'
+
+  inform_about_pr_size_best_practices:
+    if:
+      - {{ not (pr.author | includes(term="gr0wth-b0t")) }}
+    run:
+      - action: add-comment@v1
+        args:
+          comment: |
+            ## 📊 PR Size Analysis & Best Practices
+            - This PR includes {{ changes.total_line_changes }} line changes
+            - This PR is {{ changes.ratio }}% new code
+
+            Based on LinearB's [Engineering Benchmarks]({{ linearb_data.url_analytics }}):
+            {% if is.elite_size_pr %}
+            🎉 This PR is an **elite size PR** under {{ linearb_data.max_elite_size }} line changes 🎉 
+            {% endif %}
+            {% if is.good_size_pr %}
+            This PR is a **good size PR** under {{ linearb_data.max_good_size }} line changes.
+            {% endif %}
+            {% if is.fair_size_pr %}
+            This PR is a **fair size PR** under {{ linearb_data.max_fair_size }} line changes.
+            {% endif %}
+            {% if is.needs_focus_size_pr %}
+            This PR is **not focused** and is over {{ linearb_data.max_fair_size }} line changes. Consider splitting it into multiple PRs.
+            Please read [this article]({{ linearb_data.url_explaining_pr_size }}) for more information.
+            {% endif %}
+            ![Performance Level Explained]({{ linearb_data.url_performance_level_image }})
+      - action: add-label@v1
+        args:
+          label: '{% if is.elite_size_pr %}PR Size: Elite{% endif %}{% if is.good_size_pr %}PR Size: Good{% endif %}{% if is.fair_size_pr %}PR Size: Fair{% endif %}{% if is.needs_focus_size_pr %}PR Size: Needs Focus{% endif %}'
+          color: '{% if is.elite_size_pr %}{{ colors.green }}{% endif %}{% if is.good_size_pr %}{{ colors.blue }}{% endif %}{% if is.fair_size_pr %}{{ colors.orange }}{% endif %}{% if is.needs_focus_size_pr %}{{ colors.red }}{% endif %}'
+  
+  reject_need_focus_prs:
+    if:
+      - {{ is.needs_focus_size_pr }}
+      - {{ not (pr.author | includes(term="gr0wth-b0t")) }}
+    run:
+      - action: request-changes@v1
+        args:
+          comment: |
+            Rejecting this PR because of its size. See **📊 PR Size Analysis & Best Practices** comment for more information.
+
+# The next function calculates the estimated time to review and makes it available in the automation above.
+calc:
+  etr: {{ branch | estimatedReviewTime }}
+
+colors:
+  orange: 'd93f0b'
+  red: 'F6443B'
+  longPr: 'E94637'
+  mediumPr: 'FBBD10'
+  shortPr: '36A853'
+  green: '36A853'
+  blue: '1A73E8'
+
+is:
+  formatting: {{ source.diff.files | isFormattingChange }}
+  docs: {{ files | allDocs }}
+  tests: {{ files | allTests }}
+  images: {{ files | allImages }}
+  one_file: {{ files | length == 1 }}
+  one_line: {{ changes.additions - changes.deletions <= 1 }}
+  # based on linearB teams data (https://linearb.io/resources/engineering-benchmarks)
+  elite_size_pr: {{ changes.total_line_changes <= linearb_data.max_elite_size }}
+  good_size_pr: {{ changes.total_line_changes <= linearb_data.max_good_size and changes.total_line_changes > linearb_data.max_elite_size }}
+  fair_size_pr: {{ changes.total_line_changes <= linearb_data.max_fair_size and changes.total_line_changes > linearb_data.max_good_size }}
+  needs_focus_size_pr: {{ changes.total_line_changes > linearb_data.max_fair_size }}
+
+has:
+  screenshot_link: {{ pr.description | includes(regex=r/!\[.*\]\(.*(jpg|svg|png|gif|psd).*\)/) }}
+  image_uploaded: {{ pr.description | includes(regex=r/<img.*src.*(jpg|svg|png|gif|psd).*>/) }}
+  jira:
+    ticket_in_title: {{ pr.title | includes(regex=r/\bGROWDEV-\d+\b/) }}
+    ticket_in_desc: {{ (pr.description | includes(regex=r/atlassian.net\/browse\/\w{1,}-\d{3,4}/)) or (pr.description | includes(regex=r/\bGROWDEV-\d+\b/)) }}
+    ticket_in_branch: {{ branch.name | includes(regex=r/\bGROWDEV-\d+\b/) }}
+
+changes:
+  # Sum all the lines added/edited in the PR
+  additions: {{ branch.diff.files_metadata | map(attr='additions') | sum }}
+  # Sum all the line removed in the PR
+  deletions: {{ branch.diff.files_metadata | map(attr='deletions') | sum }}
+  # Calculate the ratio of new code
+  ratio: {{ (changes.additions / (changes.additions + changes.deletions)) * 100 | round(2) }}
+  # sum total line changes in the PR (not by file)
+  total_line_changes: {{ branch.diff.size }}
+
+linearb_data:
+  url_performance_level_image: https://safe-memory-a59eddb60f.media.strapiapp.com/large_Frame_33_6694634bf7.png
+  url_analytics: https://linearb.io/resources/engineering-benchmarks
+  url_explaining_pr_size: https://linearb.io/blog/reducing-pr-review-time#:~:text=been%20forgotten%20about-,Pull%20Request%20Is%20Too%20Big,-As%20we%20talked
+  # based on linearB teams data (https://linearb.io/resources/engineering-benchmarks)
+  max_elite_size: 98
+  max_good_size: 148
+  max_fair_size: 218
+
+provider: jira
+
+config:
+  ignore_files:
+    - '**/yarn.lock'
+    - '**/package-lock.json'
+    - '**/openapi.json'
+    - '**/swagger.json'
+    - '**/index.ts'
+    - '**/payloads/*.payload.ts'
+    - '**/*.mock.ts'
+    - '**/__snapshots__/*.snap'
+    - '**/.schemas/*.schema.json'
