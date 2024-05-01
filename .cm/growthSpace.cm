@@ -4,7 +4,7 @@ manifest:
 
 triggers:
   on:
-    - commit
+    - label_added
 
 automations:
   # Add a label that indicates how many minutes it will take to review the PR.
