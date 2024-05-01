@@ -4,7 +4,6 @@ manifest:
 
 triggers:
   on:
-    - pr_created
     - commit
 
 automations:
