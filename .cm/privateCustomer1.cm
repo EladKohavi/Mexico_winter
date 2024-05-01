@@ -2,9 +2,7 @@
 # gitStream Automation file
 manifest:
   version: 1.0
-config:
-  ignore_files:
-    - '**/package-lock.json'
+
 provider: jira
 orgName: showpass
 {% set ticketid = "" %}
