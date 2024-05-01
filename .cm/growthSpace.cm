@@ -2,9 +2,10 @@
 manifest:
   version: 1.0
 
-on:
-  - pr_created
-  - commit
+triggers:
+  on:
+    - pr_created
+    - commit
 
 automations:
   # Add a label that indicates how many minutes it will take to review the PR.
