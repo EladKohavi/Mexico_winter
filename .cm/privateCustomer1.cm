@@ -1,0 +1,76 @@
+# -*- mode: yaml -*-
+# gitStream Automation file
+manifest:
+  version: 1.0
+config:
+  ignore_files:
+    - '**/package-lock.json'
+provider: jira
+orgName: showpass
+{% set ticketid = "" %}
+{% for ticket in tickets %}
+{% if (ticket | includes(regex=r/\b[A-Za-z]+-\d+\b/)) %}
+{% set ticketid = ticket %}
+{% endif %}
+{% endfor %} 
+automations:
+  # Add a label that indicates how many minutes it will take to review the PR.
+  estimated_time_to_review:
+    if:
+      - true
+    run:
+      - action: add-label@v1
+        args:
+          label: "{{ calc.etr }} min review"
+          color: {{ colors.red if (calc.etr >= 20) else ( colors.yellow if (calc.etr >= 5) else colors.green ) }}
+  # Inform PR authors when they fail to reference Jira tickets in the PR title or description.
+  label_prs_without_tests:
+    if:
+      - {{ files | match(regex=r/[^a-zA-Z0-9](spec|test|tests)[^a-zA-Z0-9]/) | nope }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'missing-tests'
+          color: '#E94637'
+  # Post a comment that lists the best experts for the files that were modified.
+  explain_code_experts:
+    if:
+      - true
+    run:
+      - action: explain-code-experts@v1 
+        args:
+          gt: 10 
+  comment_issue_tracker:
+    if:
+      - {{ has.ticket_in_title or has.ticket_in_branch }}
+    run:
+      - action: add-comment@v1
+        args:
+          comment: Issue Tracker Link - [{{ticketid}}]({{tracker[provider].baseurl}}{{ticketid}})
+  comment_issue_tracker_missing:
+    if:
+      - {{ not has.ticket_in_title and not has.ticket_in_branch }}
+    run:
+      - action: add-comment@v1
+        args:
+          comment: This PR is missing the Jira ID in the branch or PR name.
+# +----------------------------------------------------------------------------+
+# | Custom Expressions                                                         |
+# | https://docs.gitstream.cm/how-it-works/#custom-expressions                 |
+# +----------------------------------------------------------------------------+
+calc:
+  etr: {{ branch | estimatedReviewTime }}
+has:
+  ticket_in_title: {{ pr.title | includes(regex=tracker[provider].pattern) }}
+  ticket_in_branch: {{ branch.name | includes(regex=tracker[provider].pattern) }}
+tracker:
+  jira:
+    baseurl: https://{{orgName}}.atlassian.net/browse/
+    pattern: r/\b[A-Za-z]+-\d+\b/
+tickets:
+  - {{branch.name | capture(regex=tracker[provider].pattern)}}
+  - {{pr.title | capture(regex=tracker[provider].pattern)}}
+colors:
+  red: 'b60205'
+  yellow: 'fbca04'
+  green: '0e8a16'
