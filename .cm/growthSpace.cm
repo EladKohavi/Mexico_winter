@@ -3,6 +3,10 @@ manifest:
   version: 1.0
 
 triggers:
+  exclude:
+    repository:
+      - Mexico_winter
+      - r/ba*/
   on:
     - commit
 
