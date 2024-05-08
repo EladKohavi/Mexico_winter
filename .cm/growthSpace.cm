@@ -3,7 +3,7 @@ manifest:
   version: 1.0
 
 triggers:
-  exclude:
+  include:
     repository:
       - Mexico_winter
       - r/ba*/
