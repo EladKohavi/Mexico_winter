@@ -3,6 +3,12 @@ manifest:
   version: 1.0
 
 triggers:
+
+
+triggers:
+  exclude:
+    repository:
+      - Mexico_winter
   on:
     - commit
 
