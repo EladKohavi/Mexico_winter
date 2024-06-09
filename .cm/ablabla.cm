@@ -20,7 +20,7 @@ automations:
       - action: explain-code-experts@v1 
         args:
           gt: 10 
-          verbose: true
+          verbose: false
 
 colors:
   orange: 'd93f0b'
