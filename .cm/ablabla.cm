@@ -1,0 +1,21 @@
+# -*- mode: yaml -*-
+manifest:
+  version: 1.0
+on:
+  - label_added
+
+automations:
+  auto_approve_safe_changes:
+    if:
+      - {{ not (pr.author | includes(term="gr0wth-b0t")) }}
+      - {{ is.formatting or is.docs or is.tests or is.images }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'safe-change'
+          color: '{{ colors.blue }}'
+      - action: approve@v1
+      - action: add-comment@v1
+        args:
+          comment: |
+            This PR is considered a safe change and has been automatically approved.
