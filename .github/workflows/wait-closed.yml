@@ -11,3 +11,15 @@ jobs:
           echo "Waiting for 30 seconds..."
           sleep 120
           echo "Wait completed!"
+          
+      - name: Update Check Run Status
+        uses: octokit/request-action@v2.x
+        with:
+          route: PATCH /repos/:owner/:repo/check-runs/:check_run_id
+          owner: EladKohavi
+          repo: Mexico_winter
+          check_run_id: 26313901368
+          status: "completed"
+          conclusion: "success"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
