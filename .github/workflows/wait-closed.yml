@@ -11,15 +11,39 @@ jobs:
           echo "Waiting for 30 seconds..."
           sleep 120
           echo "Wait completed!"
-          
-      - name: Update Check Run Status
-        uses: octokit/request-action@v2.x
-        with:
-          route: PATCH /repos/:owner/:repo/check-runs/:check_run_id
-          owner: EladKohavi
-          repo: Mexico_winter
-          check_run_id: 26313901368
-          status: "completed"
-          conclusion: "success"
+
+      - name: Create Check Run
+        id: create_check_run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RESPONSE=$(curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/EladKohavi/Mexico_winter/check-runs \
+            -d @- << EOF
+          {
+            "name": "Example Check",
+            "head_sha": "${{ github.sha }}",
+            "status": "in_progress"
+          }
+          EOF
+          )
+          echo "$RESPONSE"
+          echo "::set-output name=check_run_id::$(echo $RESPONSE | jq -r '.id')"
+
+      - name: Update Check Run Status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHECK_RUN_ID: ${{ steps.create_check_run.outputs.check_run_id }}
+        run: |
+          curl -X PATCH \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            https://api.github.com/repos/EladKohavi/Mexico_winter/check-runs/$CHECK_RUN_ID \
+            -d @- << EOF
+          {
+            "status": "completed",
+            "conclusion": "success"
+          }
+          EOF
