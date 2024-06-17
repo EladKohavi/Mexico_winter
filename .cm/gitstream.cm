@@ -9,7 +9,7 @@ automations:
           color: {{ 'E94637' if (calc.etr >= 20) else ('FBBD10' if (calc.etr >= 5) else '36A853') }}
       - action: add-github-check@v1
         args:
-          check_name: e2e
+          check_name: create_failed_check_run
           conclusion: skipped
 calc:
   etr: {{ branch | estimatedReviewTime }}
