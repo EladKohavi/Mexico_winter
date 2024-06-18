@@ -1,14 +1,11 @@
+# This example configuration for provides basic automations to get started with gitStream.
 # View the gitStream quickstart for more examples: https://docs.gitstream.cm/quick-start/
 manifest:
   version: 1.0
 
-triggers:
-  include:
-    repository:
-      - Mexico_winter
-      - r/ba*/
-  on:
-    - commit
+on:
+  - pr_created
+  - commit
 
 automations:
   # Add a label that indicates how many minutes it will take to review the PR.
@@ -61,6 +58,7 @@ automations:
   approve_and_merge_audit_fix_prs:
     if:
       - {{ branch.name | includes(term="audit/") }}
+      - {{ pr.author | includes(term="gr0wth-b0t") }}
     run:
       - action: approve@v1
       - action: add-label@v1
