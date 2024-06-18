@@ -1,0 +1,15 @@
+# -*- mode: yaml -*-
+manifest:
+  version: 1.0
+
+automations:
+  approve_and_merge_dependabot_prs:
+      if:
+        - true
+      run:
+        - action: approve@v1
+        - action: add-label@v1
+          args:
+            label: 'approved-dependabot'
+            color: '{{ colors.green }}'
+        - action: merge@v1
