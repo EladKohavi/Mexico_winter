@@ -13,3 +13,12 @@ automations:
             label: 'approved-dependabot'
             color: '{{ colors.green }}'
         - action: merge@v1
+
+colors:
+  orange: 'd93f0b'
+  red: 'F6443B'
+  longPr: 'E94637'
+  mediumPr: 'FBBD10'
+  shortPr: '36A853'
+  green: '36A853'
+  blue: '1A73E8'
