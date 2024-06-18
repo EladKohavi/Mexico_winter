@@ -67,17 +67,6 @@ automations:
           color: '{{ colors.green }}'
       - action: merge@v1
 
-  approve_and_merge_dependabot_prs:
-    if:
-      - true
-    run:
-      - action: approve@v1
-      - action: add-label@v1
-        args:
-          label: 'approved-dependabot'
-          color: '{{ colors.green }}'
-      - action: merge@v1
-
   approve_release_prs:
     if:
       - {{ branch.name | includes(term="release/") }}
