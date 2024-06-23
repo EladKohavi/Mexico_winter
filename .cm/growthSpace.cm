@@ -55,18 +55,6 @@ automations:
           comment: |
             This PR is considered a safe change and has been automatically approved.
 
-  approve_and_merge_audit_fix_prs:
-    if:
-      - {{ branch.name | includes(term="audit/") }}
-      - {{ pr.author | includes(term="gr0wth-b0t") }}
-    run:
-      - action: approve@v1
-      - action: add-label@v1
-        args:
-          label: 'approved-audit-fix'
-          color: '{{ colors.green }}'
-      - action: merge@v1
-
   approve_release_prs:
     if:
       - {{ branch.name | includes(term="release/") }}
