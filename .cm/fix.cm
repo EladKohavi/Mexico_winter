@@ -1,4 +1,4 @@
-"# -*- mode: yaml -*-
+# -*- mode: yaml -*-
 manifest:
   version: 1.0
 
@@ -28,4 +28,4 @@ automations:
       - action: merge@v1
 
 colors:
-  green: '36A853'"
+  green: '36A853'
