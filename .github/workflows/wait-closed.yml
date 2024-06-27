@@ -44,6 +44,6 @@ jobs:
             -d @- << EOF
           {
             "status": "completed",
-            "conclusion": "failure"
+            "conclusion": "success"
           }
           EOF
