@@ -163,13 +163,6 @@ automations:
     run: 
       - action: add-label@v1
         args:
-          label: '18'
-  automation18:
-    if:
-      - true
-    run: 
-      - action: add-label@v1
-        args:
           label: '23'
   automation24:
     if:
