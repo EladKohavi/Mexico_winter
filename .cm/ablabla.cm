@@ -185,3 +185,38 @@ automations:
       - action: add-label@v1
         args:
           label: '26'
+  automation27:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '27'
+  automation28:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '28'
+  automation29:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '29'
+  automation30:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '30'
+  automation31:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '31'
