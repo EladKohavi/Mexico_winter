@@ -129,3 +129,66 @@ automations:
       - action: add-label@v1
         args:
           label: '18'
+  automation19:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '19'
+  automation20:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '20'
+  automation21:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '21'
+  automation22:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '22'
+  automation23:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '18'
+  automation18:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '23'
+  automation24:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '24'
+  automation25:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '25'
+  automation26:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '26'
