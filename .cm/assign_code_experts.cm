@@ -9,123 +9,32 @@ automations:
     run: 
       - action: add-comment@v1
         args:
-          comment: '1'
+          comment: 'lkjdsgha1'
   automation2:
     if:
       - true
     run: 
       - action: add-comment@v1
         args:
-          comment: '2'
+          comment: 'fsafasfds2'
   automation3:
     if:
       - true
     run: 
       - action: add-comment@v1
         args:
-          comment: '3'
+          comment: '3fdsa'
   automation4:
     if:
       - true
     run: 
       - action: add-comment@v1
         args:
-          comment: '4'
+          comment: '4fsad'
   automation5:
     if:
       - true
     run: 
       - action: add-comment@v1
         args:
-          comment: '5'
-  automation6:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '6'
-  automation7:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '7'
-  automation8:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '8'
-  automation9:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '9'
-  automation10:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '10'
-  automation11:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '11'
-  automation12:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '12'
-  automation13:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '13'
-  automation14:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '14'
-  automation15:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '15'
-  automation16:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '16'
-  automation17:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '17'
-  automation18:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '18'
+          comment: 'fsda5'
