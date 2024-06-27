@@ -3,43 +3,129 @@ manifest:
   version: 1.0
 
 automations:
-  auto_approve_safe_changes:
+  automation1:
     if:
-      - {{ not (pr.author | includes(term="gr0wth-b0t")) }}
-      - {{ is.formatting or is.docs or is.tests or is.images }}
+      - true
     run: 
       - action: add-label@v1
         args:
-          label: 'safe-change'
-          color: '{{ colors.blue }}'
-      - action: approve@v1
-      - action: add-comment@v1
+          label: '1'
+  automation2:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
         args:
-          comment: |
-            This PR is considered a safe change and has been automatically approved.
-      - action: explain-code-experts@v1 
+          label: '2'
+  automation3:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
         args:
-          gt: 10 
-          verbose: false
-
-colors:
-  orange: 'd93f0b'
-  red: 'F6443B'
-  longPr: 'E94637'
-  mediumPr: 'FBBD10'
-  shortPr: '36A853'
-  green: '36A853'
-  blue: '1A73E8'
-
-is:
-  formatting: {{ source.diff.files | isFormattingChange }}
-  docs: {{ files | allDocs }}
-  tests: {{ files | allTests }}
-  images: {{ files | allImages }}
-  one_file: {{ files | length == 1 }}
-  one_line: {{ changes.additions - changes.deletions <= 1 }}
-  # based on linearB teams data (https://linearb.io/resources/engineering-benchmarks)
-  elite_size_pr: {{ changes.total_line_changes <= linearb_data.max_elite_size }}
-  good_size_pr: {{ changes.total_line_changes <= linearb_data.max_good_size and changes.total_line_changes > linearb_data.max_elite_size }}
-  fair_size_pr: {{ changes.total_line_changes <= linearb_data.max_fair_size and changes.total_line_changes > linearb_data.max_good_size }}
-  needs_focus_size_pr: {{ changes.total_line_changes > linearb_data.max_fair_size }}
+          label: '3'
+  automation4:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '4'
+  automation5:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '5'
+  automation6:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '6'
+  automation7:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '7'
+  automation8:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '8'
+  automation9:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '9'
+  automation10:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '10'
+  automation11:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '11'
+  automation12:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '12'
+  automation13:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '13'
+  automation14:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '14'
+  automation15:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '15'
+  automation16:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '16'
+  automation17:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '17'
+  automation18:
+    if:
+      - true
+    run: 
+      - action: add-label@v1
+        args:
+          label: '18'
