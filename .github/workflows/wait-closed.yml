@@ -6,10 +6,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Wait for 30 seconds
+      - name: Wait for 500 seconds
         run: |
-          echo "Waiting for 30 seconds..."
-          sleep 300
+          echo "Waiting for 500 seconds..."
+          sleep 500
           echo "Wait completed!"
 
       - name: Create Check Run
