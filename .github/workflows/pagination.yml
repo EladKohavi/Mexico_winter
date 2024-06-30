@@ -12,6 +12,12 @@ jobs:
                             21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 
     steps:
+      - name: Wait for 200 seconds
+        run: |
+          echo "Waiting for 200 seconds..."
+          sleep 200
+          echo "Wait 200 completed!"
+          
       - uses: actions/checkout@v4
 
       - name: Run Automation ${{ matrix.automation-number }}
