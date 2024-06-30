@@ -10,9 +10,9 @@ jobs:
     steps:
       - name: Wait for 200 seconds
         run: |
-          echo "Waiting for 200 seconds..."
-          sleep 200
-          echo "Wait 200 completed!"
+          echo "Waiting for 20 seconds..."
+          sleep 20
+          echo "Wait completed!"
 
       - uses: actions/checkout@v4
 
