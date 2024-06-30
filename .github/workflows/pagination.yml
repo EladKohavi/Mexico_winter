@@ -1,7 +1,6 @@
 name: Run 40 Automations
 
-on:
-  workflow_dispatch:
+on: pull_request
 
 jobs:
   run-automations:
