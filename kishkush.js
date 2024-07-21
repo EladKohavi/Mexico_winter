@@ -1,2 +1,2 @@
-console.log("Bug");
+console.log("merge Bug");
 Recreate the bug
