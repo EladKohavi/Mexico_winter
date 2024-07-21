@@ -3,9 +3,7 @@ manifest:
 config:
   ignore_repositories:
     - scm-control
-triggers:
-  on:
-    - merge
+
 automations:
   
   # General Safe Changes
