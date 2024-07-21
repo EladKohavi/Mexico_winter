@@ -1,77 +1,74 @@
-# -*- mode: yaml -*-
-
 manifest:
   version: 1.0
-
-# The `automations` section includes a list of automation that applies 
-# to the repository in which gitStream is installed. Each automation has an 
-# `if` key with a list of the necessary assertions, as well as a `run` key with a
-# list of all actions. All the listed assertions need to pass in order 
-# for the following actions to be executed (there is AND relation between conditions).
-
-# Each automation under the `automations` section is independent of the others. 
-# Every time a PR is opened or changed, the automation's conditions are evaluated (the `if`). 
-# The actions under `run` are executed one by one if all the conditions pass. 
-
-# Conditions consists of an expression, which are wrapped with double curly braces, and 
-# includes a context variable like `files` and filter functions like `length`. Filters 
-# functions are essentially functions that can be applied to context variables. They are 
-# called with a pipe operator (|) and can take arguments. Read more on https://docs.gitstream.cm
-
+config:
+  ignore_repositories:
+    - scm-control
+    
 automations:
+  
+  # General Safe Changes
   safe_changes:
     if:
       - {{ is.formatting or is.docs or is.tests or is.images }}
     run: 
-      - action: add-labels@v1
-        args:
-          labels: ['safe-changes']
-      - action: approve@v1
-          
-  assign_reviewers_on_or_components_path:
-    if:
-      - {{ files | match(regex=r/src\/components\//) | some }}
-    run:
-      - action: add-reviewers@v1
-        args:
-          reviewers: [KerenLinearB]
-      - action: add-labels@v1
-        args:
-          labels: ['domain-reviewer', 'change:components']
-
-  skip_cypress_for_uncovered_paths:
-    if:
-      - {{ files | match(regex=r/ResourceAllocationOverview/) | every }}
-    run:
-      - action: update-check@v1
-        args:
-          check_name: 'cypress-e2e'
-          status: 'completed'
-          conclusion: 'skipped'
       - action: add-label@v1
         args:
-          label: 'skip-cypress-e2e'
-          
-  assign_reviewers_on_redux_stuff:
+          label: 'safe-changes'
+      - action: approve@v1
+  # Dependabot PRs
+  dependabot_pr:
     if:
-      - {{ files | match(regex=r/src\/state\//) | some }}
+      - {{ pr.author | includes(term='dependabot') }}
     run:
-      - action: add-reviewers@v1
+      - action : add-comment@v1
         args:
-          reviewers: [orielz]
-      - action: add-labels@v1
-        args:
-          labels: ['domain-reviewer', 'change:redux']
-
-  explain_code_experts:
+          comment: |
+            This PR was created by {{ pr.author }} who is eligible for auto-approval in this organization.
+      - action: approve@v1
+  # Single Log Changes for Java / Kotlin
+  log_changes_in_java:
     if: 
-      - true
-    run:
-      - action: explain-code-experts@v1 
+      - {{ files | match(regex=r/\.java$|\.kt$/) | every }}
+      - {{ files | length == 1 }}
+      - {{ source.diff.files | matchDiffLines(regex=r/^[+-].*log\.(trace|debug|info|warn|error)/, ignoreWhiteSpaces=true) | every }}
+    run: 
+      - action: add-label@v1
         args:
-          gt: 10 
-
-
+          label: 'logging-changes'
+      - action: approve@v1
+  # Single Log Changes for JavaScript / TypeScript
+  log_changes_in_js:
+    if: 
+      - {{ files | match(regex=r/\.js$|\.ts$/) | every }}
+      - {{ files | length == 1 }}
+      - {{ source.diff.files | matchDiffLines(regex=r/^[+-].*console\.log/, ignoreWhiteSpaces=true) | every }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'logging-changes'
+      - action: approve@v1
+  # Single Log Changes for Python
+  log_changes_in_py:
+    if: 
+      - {{ files | match(regex=r/\.py$/) | every }}
+      - {{ files | length == 1 }}
+      - {{ source.diff.files | matchDiffLines(regex=r/^[+-].*logger\.(trace|debug|info|warn|error)/, ignoreWhiteSpaces=true) | every }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'logging-changes'
+      - action: approve@v1
+  # Single Log Changes for C#
+  log_changes_in_cs:
+    if: 
+      - {{ files | match(regex=r/\.cs$/) | every }}
+      - {{ files | length == 1 }}
+      - {{ source.diff.files | matchDiffLines(regex=r/^[+-].*log\.(trace|debug|info|warn|error)/, caseSensitive=false, ignoreWhiteSpaces=true) | every }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'logging-changes'
+      - action: approve@v1
 is:
   formatting: {{ source.diff.files | isFormattingChange }}
   docs: {{ files | allDocs }}
