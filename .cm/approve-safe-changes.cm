@@ -3,8 +3,9 @@ manifest:
 config:
   ignore_repositories:
     - scm-control
-on:
-  - merge
+triggers:
+  on:
+    - commit
 
 automations:
   
