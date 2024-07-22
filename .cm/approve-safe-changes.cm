@@ -5,7 +5,7 @@ config:
     - scm-control
 triggers:
   on:
-    - commit
+    - merge
 
 automations:
   
