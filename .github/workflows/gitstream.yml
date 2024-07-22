@@ -8,36 +8,46 @@ on:
   workflow_dispatch:
     inputs:
       client_payload:
-        description: The Client payload
-        required: true
+          description: The Client payload
+          required: true
       full_repository:
-        description: the repository name include the owner in `owner/repo_name` format
-        required: true
+          description: the repository name include the owner in `owner/repo_name` format
+          required: true
       head_ref:
-        description: the head sha
-        required: true
+          description: the head sha
+          required: true
       base_ref:
-        description: the base ref 
-        required: true
+          description: the base ref 
+          required: true
       installation_id:
-        description: the installation id
-        required: false
+          description: the installation id
+          required: false
       resolver_url:
-        description: the resolver url to pass results to
-        required: true
+          description: the resolver url to pass results to
+          required: true
       resolver_token:
-        description: Optional resolver token for resolver service
-        required: false
-        default: ''
+          description: Optional resolver token for resolver service
+          required: false
+          default: ''
       debug_mode:
-        description: Run parser in debug mode
-        required: false
-        default: true
+          description: Debug mode
+          required: false
+          default: true
+
 jobs:
   gitStream:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     name: gitStream workflow automation
+    env:
+      SLACK_LINEAR_BEEHIVE_WEBHOOK: ${{ secrets.SLACK_LINEAR_BEEHIVE_WEBHOOK }}
+      SLACK_TEAM_FLARE_WEBHOOK: ${{ secrets.SLACK_TEAM_FLARE_WEBHOOK }}
+      JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+      JIRA_URL: ${{ secrets.JIRA_URL }}
+      JIRA_USER: ${{ secrets.JIRA_USER }}
+      UI_GUILD_SLACK_WEBHOOK: ${{ secrets.UI_GUILD_SLACK_WEBHOOK }}
+      LINEARB_METRICS_API_KEY: ${{ secrets.LINEARB_METRICS_API_KEY }}
+      OPEN_AI_TOKEN: ${{ secrets.OPEN_AI_TOKEN }}
     steps:
       - name: Evaluate Rules
         uses: linear-b/gitstream-github-action@v2
@@ -50,7 +60,7 @@ jobs:
           installation_id: ${{ github.event.inputs.installation_id }}
           resolver_url: ${{ github.event.inputs.resolver_url }}
           resolver_token: ${{ github.event.inputs.resolver_token }}
-     
+
       - uses: actions/upload-artifact@v4
         with:
           retention-days: 7
