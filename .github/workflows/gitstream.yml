@@ -50,3 +50,9 @@ jobs:
           installation_id: ${{ github.event.inputs.installation_id }}
           resolver_url: ${{ github.event.inputs.resolver_url }}
           resolver_token: ${{ github.event.inputs.resolver_token }}
+     
+      - uses: actions/upload-artifact@v4
+        with:
+          retention-days: 7
+          name: output
+          path: code/output
