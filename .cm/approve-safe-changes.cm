@@ -11,6 +11,8 @@ automations:
   
   # General Safe Changes
   safe_changes:
+    on:
+      - commit
     if:
       - {{ is.formatting or is.docs or is.tests or is.images }}
     run: 
