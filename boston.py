@@ -1,6 +1,6 @@
 # Basic Operations in Python
 
-# Variables
+ # Variables
 a = 10
 b = 5
 
