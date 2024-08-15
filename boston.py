@@ -8,6 +8,10 @@ b = 5
 sum_result = a + b
 print(f"Addition: {a} + {b} = {sum_result}")
 
+# Addition
+sum_result = a + b
+print(f"Addition: {a} + {b} = {sum_result}")
+
 # Subtraction
 subtraction_result = a - b
 print(f"Subtraction: {a} - {b} = {subtraction_result}")
