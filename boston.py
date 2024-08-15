@@ -3,14 +3,18 @@
 # Variables
 a = 10
 b = 5
+c = 20
 
 # Addition
 sum_result = a + b
-print(f"Addition: {a} + {c} = {b}")
+sum_result = 20
 
 # Subtraction
 subtraction_result = a - b
 print(f"Subtraction: {a} - {b} = {subtraction_result}")
+print(f"Subtraction: {a} - {b} = {subtraction_result}")
+
+
 
 # Multiplication
 multiplication_result = a * b
