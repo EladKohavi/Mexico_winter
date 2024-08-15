@@ -1,19 +1,25 @@
 # -*- mode: yaml -*-
+manifest:
+  version: 1.0
 
 automations:
-  estimated_time_to_review:
+  safe_changes:
     if:
-      - {{ files | match(list=['README.md']) | some }}
+      - {{ is.safe }}
     run:
+      - action: approve@v1
+
       - action: add-label@v1
         args:
-          label: "{{ calc.etr }} min review"
-          color: {{ 'E94637' if (calc.etr >= 20) else ('FBBD10' if (calc.etr >= 5) else '36A853') }}
-      - action: add-github-check@v1
-        args:
-          check_name: e2e
-          conclusion: skipped
-      - action: merge@v1
+          label: 'safe-changes'
 
-calc:
-  etr: {{ branch | estimatedReviewTime }}
+is:
+  docs: {{ files | allDocs }}
+  tests: {{ files | allTests }}
+  asset: {{ files | match(regex=r/\.(png|svg|gif|css)$/) | every }}
+  formatting: {{ source.diff.files | isFormattingChange }}
+  safe: {{ is.docs or is.tests or is.asset or is.formatting }}
+
+  additions: {{ branch.diff.files_metadata | map(attr='additions') | sum }}
+  deletions: {{ branch.diff.files_metadata | map(attr='deletions') | sum }}
+  small_changes: {{ (is.additions + is.deletions) <= 10 }}
