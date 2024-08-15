@@ -2,7 +2,7 @@
 
 # Variables
 a = 10
-b = 5
+ b = 5
 
 # Addition
 sum_result = a + b
