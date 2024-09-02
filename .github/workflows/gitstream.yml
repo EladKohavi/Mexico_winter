@@ -50,7 +50,7 @@ jobs:
       OPEN_AI_TOKEN: ${{ secrets.OPEN_AI_TOKEN }}
     steps:
       - name: Evaluate Rules
-        uses: linear-b/gitstream-github-action@eladushTag
+        uses: linear-b/gitstream-github-action@elad_test_2924
         id: rules-engine
         with:
           full_repository: ${{ github.event.inputs.full_repository }}
