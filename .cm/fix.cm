@@ -1,31 +1,394 @@
 # -*- mode: yaml -*-
+# +----------------------------------------------------------------------------+
+# | WARNING: This file controls repo automations, use caution when modifying   |
+# +----------------------------------------------------------------------------+
+# | This file contains one or more /:\ gitStream automations:                  |
+# | https:// docs.gitstream.cm                                                 |
+# |                                                                            |
+# | gitStream uses YAML syntax with nunjucks templating via Jinja 2.           |
+# |                                                                            |
+# | Automations follow an "if this, then that" execution format.               |
+# | More info here: https://docs.gitstream.cm/how-it-works/                    |
+# |                                                                            |
+# +----------------------------------------------------------------------------+
+
+# /:\ gitStream Reference Docs:
+#    Context Variables: https://docs.gitstream.cm/context-variables/
+#    Filter Functions: https://docs.gitstream.cm/filter-functions/
+#    Automation Actions: https://docs.gitstream.cm/automation-actions/
+
 manifest:
   version: 1.0
 
+# +----------------------------------------------------------------------------+
+# | Customize This Section                                                     |
+# +----------------------------------------------------------------------------+
+
+# Change review_team to match your organization or repo's primary review team.
+# The format is Git Organization Name / Team Name
+# review_team: 'universokobana/dev'
+
+# List of files that should trigger a sensitive file change review.
+sensitive:
+  - services/account_service/billing/creator.rb
+#   - AppRoot.tsx
+
+# Files to exclude from gitStream automations.
+config:
+  ignore_files:
+    - 'yarn.lock'
+    - 'Gemfile.lock'
+
+# Set long_review_threshold to the number of minutes that should trigger extra review requirements.
+long_review_threshold: 5
+
+# +----------------------------------------------------------------------------+
+# | Automations
+# +----------------------------------------------------------------------------+
+
 automations:
-  approve_and_merge_audit_fix_prs:
+
+  # Post a comment that recommends reviewers based on their knowledge of the files in the PR.
+  # https://docs.gitstream.cm/automations/standard/explain-code-experts/
+  # Add a label that indicates how many minutes it will take to review the PR.
+  estimated_time_to_review:
     if:
-      - {{ branch.name | includes(term="audit/") }}
-      - {{ pr.author | includes(term="EladKohavi") }}
+      - true
     run:
-      - action: approve@v1
       - action: add-label@v1
         args:
-          label: 'approved-audit-fix'
-          color: '{{ colors.green }}'
-      - action: merge@v1
+          label: "{{ calc.etr }} min review"
+          color: {{ colors.red if (calc.etr >= 20) else ( colors.yellow if (calc.etr >= 5) else colors.green ) }}
 
-  approve_and_merge_dependabot_prs:
+  explain_code_experts:
+    # Alternatively, if you only want to trigger when the slash command `/gitstream suggest-reviewers` is included in a comment,
+    # change '- true' to '- {{ (pr.comments | match(attr='content', term='/gitstream suggest-reviewers') | some) }}'
     if:
-      - {{ branch.name | includes(term="dependabot") }}
-      - {{ pr.author | includes(term="dependabot") }}
+      - true
     run:
-      - action: approve@v1
+      - action: explain-code-experts@v1
+        args:
+          gt: 10
+
+  # Automatically approve changes that only affect formatting, documentation, tests, or images
+  # https://docs.gitstream.cm/automations/approve-safe-changes/
+  approve_safe_changes:
+    if:
+      - {{ is.safe_change }}
+    # Apply a safe change label, approve the PR and explain why in a comment.
+    run:
       - action: add-label@v1
         args:
-          label: 'approved-dependabot'
-          color: '{{ colors.green }}'
-      - action: merge@v1
+          label: 'Safe Change'
+          color: {{ colors.green }}
+      - action: approve@v1
+      - action: add-comment@v1
+        args:
+          comment: |
+            This PR is considered a safe change and has been automatically approved.
 
+  # assign_code_experts:
+    # Triggered when someone applies a suggest-reviewer label to a PR.
+    # if:
+      # Apply only if has labels
+      # - {{ pr.labels | match(term='suggest-reviewer') | some }}
+      # - true
+    # More info about code experts
+    # https://docs.gitstream.cm/filter-functions/#codeexperts
+    # run:
+    #   - action: add-reviewers@v1
+    #     args:
+    #       reviewers: {{ repo | codeExperts(gt=10) }}
+    #   - action: explain-code-experts@v1
+    #     args:
+    #       gt: 10
+
+  # Set criteria for PRs that only need one reviewer.
+  # This helps reduce the review burden for low-risk PRs.
+  # require_one_review:
+  #   if:
+  #     - {{ not has.sensitive_files }}
+  #     - {{ is.quick_review }}
+  #     - {{ approvals.zero }}
+  #   run:
+  #     - action: add-label@v1
+  #       args:
+  #         label: ⏳ Waiting for 1 reviewer
+  #         color: {{ colors.yellow }}
+  #     - action: add-reviewers@v1
+  #       args:
+  #         reviewers: [{{ review_team }}]
+  #         unless_reviewers_set: true
+  #     - action: set-required-approvals@v1
+  #       args:
+  #         approvals: 1
+
+  {% for item in teams %}
+  require_one_reviews_team_{{ item.name }}:
+    if:
+      - {{ not has.sensitive_files }}
+      - {{ is.quick_review }}
+      - {{ approvals.zero }}
+      - {{ pr.author_teams | match(regex=item.regex) }}
+    run:
+      - action: add-label@v1
+        args:
+          label: ⏳ Waiting for 1 reviewer
+          color: {{ colors.yellow }}
+      - action: add-reviewers@v1
+        args:
+          reviewers: [{{ item.team }}]
+          unless_reviewers_set: true
+      - action: set-required-approvals@v1
+        args:
+          approvals: 1
+      - action: add-comment@v1
+        args:
+          comment: |
+            This {{ item.name }} team has been automatically assigned to review this PR.
+  {% endfor %}
+  # Set criteria for PRs that need extra reviewers.
+  # This helps bring in extra scrutiny for large PRs or PRs that touch sensitive parts of the code.
+  # require_two_reviews:
+  #   if:
+  #     - {{ is.long_review or has.sensitive_files }}
+  #     - {{ approvals.ltTwo }}
+  #   run:
+  #     - action: add-label@v1
+  #       args:
+  #         label: {{ '⏳ Waiting for 2 reviewers' if (approvals.zero) else '⏳ Waiting for 1 reviewer' }}
+  #         color: {{ colors.yellow }}
+  #     - action: add-reviewers@v1
+  #       args:
+  #         reviewers: [{{ review_team }}]
+  #         unless_reviewers_set: true
+  #     - action: set-required-approvals@v1
+  #       args:
+  #         approvals: 2
+
+  {% for item in teams %}
+  require_two_reviews_team_{{ item.name }}:
+    if:
+      - {{ approvals.ltTwo }}
+      - {{ is.long_review or has.sensitive_files }}
+      - {{ pr.author_teams | match(regex=item.regex) }}
+    run:
+      - action: add-label@v1
+        args:
+          label: {{ '⏳ Waiting for 2 reviewers' if (approvals.zero) else '⏳ Waiting for 1 reviewer' }}
+          color: {{ colors.yellow }}
+      - action: add-reviewers@v1
+        args:
+          reviewers: [{{ item.team }}]
+          unless_reviewers_set: true
+      - action: set-required-approvals@v1
+        args:
+          approvals: 2
+      - action: add-comment@v1
+        args:
+          comment: |
+            This {{ item.name }} team has been automatically assigned to review this PR.
+  {% endfor %}
+
+  # Flag low-risk PRs that are ready to merge.
+  flag_quick_review_merge:
+    if:
+      - {{ not has.sensitive_files }}
+      - {{ is.quick_review }}
+      - {{ not has.do_not_merge_label }}
+      - {{ approvals.gtZero }}
+    run:
+      - action: add-label@v1
+        args:
+          label: ✌️ Ready to merge
+          color: {{ colors.green }}
+
+  # Flag higher risk PRs that are ready to merge.
+  flag_large_review_merge:
+    if:
+      - {{ is.long_review or has.sensitive_files }}
+      - {{ approvals.gtOne }}
+    run:
+      - action: add-label@v1
+        args:
+          label: ✌️ Ready to merge
+          color: {{ colors.green }}
+
+# Choose a previous contributor between specified expertise thresholds and assign them as a reviewer.
+# Post a comment explaining why this action was taken.
+  share_knowledge:
+    if:
+      # Apply only if labeled
+      # - {{ pr.labels | match(term='Share Knowledge') | some }}
+      # Always
+      - true
+    run:
+      - action: add-reviewers@v1
+        args:
+          reviewers: {{ repo | codeExperts(gt=30, lt=60) | random }}
+      - action: add-comment@v1
+        args:
+          comment: |
+            gitStream has assigned a reviewer to increase knowledge sharing on this PR.
+
+# Post a comment that indicates what percentage of the PR contains new code.
+  percent_new_code:
+    if:
+      - true
+    run:
+      - action: add-comment@v1
+        args:
+          comment: |
+            This PR is {{ changes.ratio }}% new code.
+
+# Apply a missing-tests label to any PRs that don't update tests.
+# gitStream will remove this label if the contributor adds a test change to the PR.
+  # label_prs_without_tests:
+  #   if:
+  #     - {{ files | match(regex=r/[^a-zA-Z0-9](spec|test|tests)[^a-zA-Z0-9]/) | nope }}
+  #   run:
+  #     - action: add-label@v1
+  #       args:
+  #         label: 'missing-tests'
+  #         color: '#E94637'
+
+  review_missing_ruby_tests:
+    if:
+      - {{ newFilesCount > newTestsCount }}
+    run:
+      - action: add-label@v1
+        args:
+            label: "⚠️ Missing Tests"
+            color: {{ colors.yellow }}
+      - action: add-comment@v1
+        args:
+          comment: |
+            Some of your new Ruby files are missing corresponding tests. Please ensure that all new files have a corresponding test file.
+
+            **New Files**: {{ newFilesCount }}
+            {{ newFiles }}
+
+            **New Tests**: {{ newTestsCount }}
+            {{ newTests }}
+
+  approve_tiny_change:
+    # Triggered for PRs that contain one file and one line.
+    if:
+      - {{ is.one_file and is.one_line }}
+    run:
+      - action: add-label@v1
+        args:
+          label: 'single-line'
+      - action: approve@v1
+      - action: add-comment@v1
+        args:
+          comment: |
+            This PR has been approved because it is only a single line
+
+  label_unresolved_threads:
+    if:
+      - {{ pr.unresolved_threads }}
+    run:
+      - action: add-label@v1
+        args:
+          label: {{ pr.unresolved_threads }} Unresolved Thread(s)
+          color: {{ colors.yellow }}
+
+  label_approvals:
+    if:
+      - {{ pr.approvals | length > 0 }}
+    run:
+      - action: add-label@v1
+        args:
+          label: {{ pr.approvals | length }} Approved Review(s)
+
+  # slack_auto_recognition:
+  #   if:
+  #       - {{ files | match(regex=r/(test|spec)/) | some }} # this pr has at least 1 test
+  #       - {{ files | length <= 5 }} # this pr has 5 or less files
+  #       - {{ pr.title | includes(regex=r/\bKOB+-\d+\b/) }} # this branch has the Notion ticket prefix
+  #       - {{ branch.diff.size <= 150 }} # this branch has 150 lines of code or less changed
+  #   run:
+  #       - action: send-slack-message@v1
+  #         args:
+  #           webhook_url: "{{ slack_webhook }}"
+  #           message: ":tada: Congrats to {{ pr.author }} for the amazing new PR, '{{ pr.title }}'! Check it out at https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"
+
+  # label_missing_notion_info:
+  #     # Triggered for PRs that don't have a Notion ticket number in the title
+  #     if:
+  #       - {{ not (has.notion_ticket_in_title) }}
+  #     run:
+  #       - action: add-label@v1
+  #         args:
+  #           label: "missing-notion"
+  #           color: 'F6443B'
+
+# +----------------------------------------------------------------------------+
+# | Custom Expressions                                                         |
+# | https://docs.gitstream.cm/how-it-works/#custom-expressions                 |
+# +----------------------------------------------------------------------------+
+
+# https://docs.gitstream.cm/filter-functions/#estimatedreviewtime
+calc:
+  etr: {{ branch | estimatedReviewTime }}
+
+has:
+  sensitive_files: {{ files | match(list=sensitive) | some }}
+  do_not_merge_label: {{ pr.labels | match(term='Do not merge') | some }}
+  # notion_ticket_in_title: {{ pr.title | includes(regex=r/\bKOB+-\d+\b/) }}
+
+is:
+  safe_change: {{ (source.diff.files | isFormattingChange) or (files | allDocs) or (files | allTests) or (files | allImages) }}
+  quick_review: {{ files | length <= 7 and calc.etr <= long_review_threshold }}
+  long_review: {{ files | length > 7 or calc.etr > long_review_threshold }}
+  one_file: {{ files | length == 1 }}
+  one_line: {{ changes.additions - changes.deletions <= 1 }}
+
+approvals:
+  zero: {{ pr.approvals | length == 0 }}
+  gtZero: {{ pr.approvals | length > 0 }}
+  gtOne: {{ pr.approvals | length > 1 }}
+  ltTwo: {{ pr.approvals | length < 2 }}
+
+# These are all of the colors in GitHub's default label color palette.
 colors:
-  green: '36A853'
+  red: 'b60205'
+  orange: 'd93f0b'
+  yellow: 'fbca04'
+  green: '0e8a16'
+  blue: '1d76db'
+  purple: '5319e7'
+
+changes:
+  # Sum all the lines added/edited in the PR
+  additions: {{ branch.diff.files_metadata | map(attr='additions') | sum }}
+  # Sum all the line removed in the PR
+  deletions: {{ branch.diff.files_metadata | map(attr='deletions') | sum }}
+  # Calculate the ratio of new code
+  ratio: {{ (changes.additions / (changes.additions + changes.deletions)) * 100 | round(2) }}
+
+newFiles: {{ source.diff.files | filter(attr='new_file', regex=r/^app\/(?!.*\_spec\.rb$).*\.rb$/) | filter(attr='original_file', regex=r/^$/) | map(attr='new_file') }}
+newTests: {{ source.diff.files | filter(attr='new_file', regex=r/spec\/.*\_spec\.rb$/) | filter(attr='original_file', regex=r/^$/) | map(attr='new_file') }}
+
+newFilesCount: {{ source.diff.files | filter(attr='new_file', regex=r/^app\/(?!.*\_spec\.rb$).*\.rb$/) | filter(attr='original_file', regex=r/^$/) | length }}
+newTestsCount: {{ source.diff.files | filter(attr='new_file', regex=r/spec\/.*\_spec\.rb$/) | filter(attr='original_file', regex=r/^$/) | length }}
+
+slack_webhook: {{ env.SLACK_DEV_WEBHOOK }}
+
+teams:
+  - regex: r/cobranca/
+    name: Charge Team
+    team: universokobana/cobranca
+  - regex: r/pagamentos/
+    name: Payment Team
+    team: universokobana/pagamentos
+  - regex: r/core/
+    name: Core Team
+    team: universokobana/core
+  - regex: r/interno/
+    name: Internal Team
+    team: universokobana/interno
+  - regex: r/security/
+    name: Security Team
+    team: universokobana/security
