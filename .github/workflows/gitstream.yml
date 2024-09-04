@@ -2,7 +2,7 @@
 
 name: gitStream workflow automation
 run-name: |
-  /:\ gitStream: PR #${{ fromJSON(fromJSON(github.event.inputs.client_payload)).pullRequestNumber }} from ${{ github.event.inputs.full_repository }}
+  /:\ gitStream: PR #${{ fromJSON(fromJSON(github.event.inputs.client_payload)).pullRequestNumber }} from ${{ github.event.inputs.full_repository }}. Cache: ${{ fromJSON(fromJSON(inputs.client_payload)).isNonCommitEvent }}. Run-id: ${{ fromJSON(fromJSON(inputs.client_payload)).artifactRunId }} 
 
 on:
   workflow_dispatch:
@@ -47,8 +47,18 @@ jobs:
       JIRA_USER: ${{ secrets.JIRA_USER }}
       UI_GUILD_SLACK_WEBHOOK: ${{ secrets.UI_GUILD_SLACK_WEBHOOK }}
       LINEARB_METRICS_API_KEY: ${{ secrets.LINEARB_METRICS_API_KEY }}
+      LINEARB_PUBLIC_API: ${{ secrets.LINEARB_PUBLIC_API }}
       OPEN_AI_TOKEN: ${{ secrets.OPEN_AI_TOKEN }}
+      OPEN_AI_GITSTREAM_QA_TOKEN: ${{ secrets.OPEN_AI_GITSTREAM_QA_TOKEN }}
+      OPEN_AI_GITSTREAM_REVIEWS_TOKEN: ${{ secrets.OPEN_AI_GITSTREAM_REVIEWS_TOKEN }}
+      ENABLE_DEBUG_ARTIFACTS: true
+      ENABLE_CACHE: false
+      TICKET_SUGGESTION_TOKEN: ${{ secrets.TICKET_SUGGESTION_TOKEN }}
     steps:
+      - name: Adding PR Url
+        run: |
+          echo '[${{ fromJSON(fromJSON(inputs.client_payload)).repo }}#${{ fromJSON(fromJSON(inputs.client_payload)).prContext.number }}](${{ fromJSON(fromJSON(inputs.client_payload)).prContext.url }}) - `${{ fromJSON(fromJSON(inputs.client_payload)).branch }}` by ${{ fromJSON(fromJSON(inputs.client_payload)).prContext.author }}' >> $GITHUB_STEP_SUMMARY
+
       - name: Evaluate Rules
         uses: linear-b/gitstream-github-action@v2
         id: rules-engine
@@ -60,9 +70,3 @@ jobs:
           installation_id: ${{ github.event.inputs.installation_id }}
           resolver_url: ${{ github.event.inputs.resolver_url }}
           resolver_token: ${{ github.event.inputs.resolver_token }}
-
-      - uses: actions/upload-artifact@v4
-        with:
-          retention-days: 1
-          name: output
-          path: code/output
