@@ -3,7 +3,7 @@ manifest:
   version: 1.0
 
 automations:
-  safe_changes:
+  safe-changes:
     if:
       - {{ is.formatting or is.docs or is.tests }}
     run:
