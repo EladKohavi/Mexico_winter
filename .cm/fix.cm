@@ -40,8 +40,7 @@ automations:
   # https://docs.gitstream.cm/automations/standard/label-management/label-unresolved-threads/
   label_unresolved_threads:
     if:
-      - {{ pr.status == 'open' }}
-      - {{ pr.unresolved_threads }}
+      - true
     run:
       - action: add-label@v1
         args:
@@ -52,7 +51,7 @@ automations:
   # https://docs.gitstream.cm/automations/label-deleted-files/
   flag_deleted_files:
     if:
-      - {{ has.deleted_files }}
+      - true
     run:
       - action: add-label@v1
         args:
@@ -62,7 +61,7 @@ automations:
   {% for item in labels %}
   label_resource_percent_{{ item.id }}:
       if:
-        - {{ files | match(list=item.resources) | some }}
+        - true
       run:
         - action: add-label@v1
           args:
