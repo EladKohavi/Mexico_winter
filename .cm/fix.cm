@@ -24,6 +24,9 @@ manifest:
 # | Automations
 # +----------------------------------------------------------------------------+
 
+on:
+  - pr_approved
+
 automations:
   # Apply color coded labels to PRs based on the estimated time to review.
   # https://docs.gitstream.cm/automations/provide-estimated-time-to-review/
