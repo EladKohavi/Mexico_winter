@@ -4,6 +4,8 @@ manifest:
 
 automations:
   automation1:
+    on:
+      - pr_approved
     if:
       - true
     run: 
