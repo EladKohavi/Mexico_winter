@@ -18,7 +18,7 @@ automations:
 
   senior_review:
     if:
-      - {{ files | match(regex=r/src/) | some }}
+      - {{ pr.title | includes(regex=r/elad/) }}
     run:
       - action: require-reviewers@v1
         args:
