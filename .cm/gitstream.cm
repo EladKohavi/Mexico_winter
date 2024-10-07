@@ -15,3 +15,11 @@ automations:
       - action: add-label@v1
         args:
           label: 'safe-changes'
+
+  senior_review:
+    if:
+      - {{ files | match(regex=r/src/) | some }}
+    run:
+      - action: require-reviewers@v1
+        args:
+          reviewers: [MishaKav]
