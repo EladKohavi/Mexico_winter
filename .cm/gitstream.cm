@@ -16,7 +16,8 @@ automations:
         args:
           label: 'safe-changes'
       - action: add-comment@v1
-        args: |
+        args:
+          comment: |
             FILES DUMP {{ pr.checks | dump | safe }}
 
   senior_review:
