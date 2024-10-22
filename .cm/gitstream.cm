@@ -15,10 +15,7 @@ automations:
       - action: add-label@v1
         args:
           label: 'safe-changes'
-      - action: add-comment@v1
-        args:
-          comment: |
-            pr.checks: {{ pr.checks | dump | safe }}
+      - action: approve@v1
 
   senior_review:
     if:
