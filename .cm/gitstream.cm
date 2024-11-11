@@ -10,7 +10,7 @@ triggers:
 automations:
   safe-changes:
     if:
-      - false
+      - true
     run:
       - action: add-label@v1
         args:
