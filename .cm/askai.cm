@@ -10,17 +10,6 @@ automations:
     run:
       - action: add-comment@v1
         args:
-          comment: "{{ source | askAI("Experienced senior TypeScript developer", 
-          "based on the given context, write bullets on how I can improve my code.
-           Identify any issues with the implementation of business logic, including:
-            - Inconsistent or inefficient logic handling.
-            - Error handling and edge cases not covered.
-            - Unnecessary complexity or unclear code flow.
-          Identify any issues with TypeScript usage, such as:
-            - Incorrect or missing types.
-            - Use of `any` where more specific types should be used.
-            - Type mismatches or unsafe type assertions.
-            - Misuse of TypeScript features like interfaces, types, or generics.
-            - Type inference that could lead to runtime errors.
-          Suggest any critical test cases that are missing for new or changed functionality.
-          relate only to diff code if exists.", env.OPEN_AI_GITSTREAM_REVIEWS_TOKEN) | prependTitle("gitStream Review") | encode }}"
+          comment: "{{ source | askAI("based on the given context, 
+can you write for me a few bullets of how can i improve in my code? can you relate only to diff code if exists?",
+env.OPEN_AI_GITSTREAM_REVIEWS_TOKEN) | prependTitle("gitStream Review") | encode }}"
