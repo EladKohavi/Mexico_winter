@@ -10,6 +10,4 @@ automations:
     run:
       - action: add-comment@v1
         args:
-          comment: "{{ source | askAI("based on the given context, 
-can you write for me a few bullets of how can i improve in my code? can you relate only to diff code if exists?",
-env.OPEN_AI_GITSTREAM_REVIEWS_TOKEN) | prependTitle("gitStream Review") | encode }}"
+          comment: "{{ source | askAI("based on the given context, can you write for me a few bullets of how can i improve in my code? can you relate only to diff code if exists?", env.OPEN_AI_GITSTREAM_REVIEWS_TOKEN) | prependTitle("gitStream Review") | encode }}"
