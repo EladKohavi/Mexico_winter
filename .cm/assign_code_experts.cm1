@@ -5,36 +5,8 @@ manifest:
 automations:
   automation1:
     if:
-      - true
+      - {{ files | extensions | match(term='html') }}
     run: 
       - action: add-comment@v1
         args:
           comment: 'lkjdsgha1'
-  automation2:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: 'fsafasfds2'
-  automation3:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '3fdsa'
-  automation4:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: '4fsad'
-  automation5:
-    if:
-      - true
-    run: 
-      - action: add-comment@v1
-        args:
-          comment: 'fsda5'
