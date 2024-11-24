@@ -6,6 +6,8 @@ automations:
   automation1:
     if:
       - {{ files | extensions | match(term='html') }}
+      - {{ files | extensions | match(term='yml') }}
+      - false
     run: 
       - action: add-comment@v1
         args:
