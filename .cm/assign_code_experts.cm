@@ -5,7 +5,8 @@ manifest:
 automations:
   automation1:
     if:
-      - {{ pr.number }}
+      - {{ files | extensions | match(term='html') }}
+      - {{ files | extensions | match(term='yml') }}
       - false
     run: 
       - action: add-comment@v1
