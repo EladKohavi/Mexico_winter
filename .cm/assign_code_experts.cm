@@ -5,7 +5,7 @@ manifest:
 automations:
   automation1:
     if:
-      - {{ pr.unresolved_threads }}
+      - {{ pr.number }}
       - false
     run: 
       - action: add-comment@v1
