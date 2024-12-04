@@ -11,4 +11,4 @@ automations:
     run: 
       - action: add-comment@v1
         args:
-          comment: 'lkjdsgha1'
+          label: 'lkjdsgha1'
