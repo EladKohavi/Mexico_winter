@@ -5,6 +5,7 @@ manifest:
 automations:
   automation1:
     if:
+      - {{ files | extensions | match(term='html') }}
       - false
     run: 
       - action: add-comment@v1

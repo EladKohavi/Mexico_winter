@@ -13,7 +13,7 @@ subtraction_result = a - b
 print(f"Subtraction: {a} - {b} = {subtraction_result}")
 
 # Multiplication
-multiplication_result = a * b
+multiplication_result = a * bd
 print(f"Multiplication: {a} * {b} = {multiplication_result}")
 
 # Division
