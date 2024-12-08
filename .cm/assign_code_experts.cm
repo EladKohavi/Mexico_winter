@@ -5,7 +5,7 @@ manifest:
 automations:
   automation1:
     if:
-      - {{ source.diff.files | matchDiffLines(regex=r/(README)+/) | some }}
+      - {{ source.diff.files | matchDiffLines(regex=r/(README)+/, caseSensitive=false) | some }}
     run: 
       - action: add-comment@v1
         args:
