@@ -18,8 +18,10 @@ automations:
       - action: approve@v1
       - action: add-comment@v1
         args:
-          comment: {{ pr.approvals }}
-
+          comment: "approvals {{ pr.approvals }}"
+      - action: add-comment@v1
+        args:
+          comment: "rc {{ pr.requested_changes }}"
   senior_review:
     if:
       - {{ pr.title | includes(regex=r/Elad/) }}
