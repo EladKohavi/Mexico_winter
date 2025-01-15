@@ -29,3 +29,18 @@ automations:
       - action: require-reviewers@v1
         args:
           reviewers: [MishaKav]
+
+  linearb_ai_review:
+    if:
+      - true
+    run:
+      - action: add-comment@v1
+        args:
+          comment: |
+            ### PR Review by LinearB_AI('Review PR')
+            {{ source | LinearB_AI(prompt=PR_REVIEW_PROMT) }}
+            
+             **Please rate this `LinearB_AI` review:**
+             - [ ] Excellent
+             - [ ] Good Enough
+             - [ ] Needs Improvement
