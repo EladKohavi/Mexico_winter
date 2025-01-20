@@ -24,8 +24,8 @@ automations:
 # These are the deprecated files that are evaluated in catch_deprecated_components
 deprecated:
   - regex: r/oldAPI/
-    old: oldAPI
-    new: newAPI
+    old: old API
+    new: new API
   - regex: r/anotherOldAPI/
-    old: anotherOldAPI
-    new: anotherNewAPI
+    old: another Old API
+    new: another New API
