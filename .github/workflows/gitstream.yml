@@ -59,6 +59,17 @@ jobs:
         run: |
           echo '[${{ fromJSON(fromJSON(inputs.client_payload)).repo }}#${{ fromJSON(fromJSON(inputs.client_payload)).prContext.number }}](${{ fromJSON(fromJSON(inputs.client_payload)).prContext.url }}) - `${{ fromJSON(fromJSON(inputs.client_payload)).branch }}` by ${{ fromJSON(fromJSON(inputs.client_payload)).prContext.author }}' >> $GITHUB_STEP_SUMMARY
 
+      - name: Create variables file
+        run: |
+          echo "resolver_url=${{ github.event.inputs.resolver_url }}" >> variables.txt
+          echo "resolver_token=${{ github.event.inputs.resolver_token }}" >> variables.txt
+
+      - name: Upload variables file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: variables
+          path: variables.txt
+
       - name: Evaluate Rules
         uses: linear-b/gitstream-github-action@v2
         id: rules-engine
