@@ -1,5 +1,4 @@
 # Basic Operations in Python
-
 # Variables
 a = 10
 b = 5
