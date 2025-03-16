@@ -10,7 +10,7 @@ print(f"Addition: {a} + {b} = {sum_result}")
 
 # Subtraction
 subtraction_result = a - b
-print(f"Subtraction: {a} - {b} = {subtraction_result}")
+print(f"Subtraction: {b} - {b} = {subtraction_result}")
 
 # Multiplication
 multiplication_result = a * b
