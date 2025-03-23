@@ -51,9 +51,9 @@ automations:
     if:
       - true
     run:
-      - action: add-reviewers@v1
-        args:
-          reviewers: [pizzahutuk/product-experience-core-i, pizzahutuk/platform-core-ii, copilot-pull-request-reviewer]
+      #- action: add-reviewers@v1
+      #  fds:
+      #    reviewers: [pizzahutuk/product-experience-core-i, pizzahutuk/platform-core-ii, copilot-pull-request-reviewer]
       - action: add-comment@v1
         args:
           comment: "The Core team has been added to this PR for visibility because gitstream has detected changes to libs/core"
