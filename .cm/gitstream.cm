@@ -6,6 +6,9 @@ config:
     - 'yarn.lock'
     - 'package-lock.json'
 
+on:
+  - merge
+
 automations:
   estimated_time_to_review:
     if:
