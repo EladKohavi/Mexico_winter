@@ -12,6 +12,9 @@ automations:
       - action: add-comment@v1
         args:
           comment: "{{ calc.etr }} min review"
+      - action: add-labels@v1
+        args:
+          labels: ['api-change', 'moshe']
   # Request changes by PR authors when they fail to reference Jira tickets in the PR title or description.
   request_missing_jira_info:
     if:
