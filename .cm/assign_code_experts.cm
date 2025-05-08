@@ -14,17 +14,7 @@ automations:
           comment: "{{ calc.etr }} min review"
       - action: add-labels@v1
         args:
-          labels: ['api-chang22e', 'mo22she']
-  # Request changes by PR authors when they fail to reference Jira tickets in the PR title or description.
-  request_missing_jira_info:
-    if:
-      - {{ not (has.jira_ticket_in_title or has.jira_ticket_in_desc) }}
-    run:
-      - action: request-changes@v1
-        args:
-          comment: |
-            This PR is missing a Jira ticket reference in the title or description.
-            Please add a Jira ticket reference to the title or description of this PR.
+          labels: ['api-chang32e', 'mo22she']
   # Post a comment that lists the best experts for the files that were modified.
   explain_code_experts:
     if:
