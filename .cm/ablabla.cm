@@ -16,5 +16,5 @@ automations:
     run: 
       - action: send-slack-message@v1
         args:
-          message: "Hello world :tada: from {{ pr.author }} in {{ pr.url }}"
+          message: "{"text":"/:\\ gitStream PR automation","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"/:\\ gitStream PR automation"}},{"type":"context","elements":[{"type":"mrkdwn","text":"*PR*: h2oai/public-cloud-infrastructure/4981"},{"type":"mrkdwn","text":"|"},{"type":"mrkdwn","text":"*Visibility*: Public"},{"type":"mrkdwn","text":"|"},{"type":"mrkdwn","text":"*PR owner*: ozahavi"},{"type":"mrkdwn","text":"|"},{"type":"mrkdwn","text":"*Automations*: gitstream/assign_code_experts, gitstream/estimated_time_to_review, gitstream/label_approvals"},{"type":"mrkdwn","text":"*Actions*: add-reviewers@v1, add-label@v1"},{"type":"mrkdwn","text":"*Provider*: github"},{"type":"mrkdwn","text":"|"},{"type":"mrkdwn","text":"*Mode*: dry-run"}]}]}"
           webhook_url: {{ env.ELAD_WEBHOOK }}
