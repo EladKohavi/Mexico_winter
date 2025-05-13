@@ -4,8 +4,6 @@ manifest:
 
 automations:
   automation1:
-    on:
-      - pr_approved
     if:
       - true
     run: 
@@ -16,6 +14,7 @@ automations:
     if:
       - true
     run: 
-      - action: add-label@v1
+      - action: send-slack-message@v1
         args:
-          label: '2'
+          message: "Hello world :tada: from {{ pr.author }} in {{ pr.url }}"
+          webhook_url: "https://hooks.slack.com/services/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"
