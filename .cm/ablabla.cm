@@ -17,4 +17,4 @@ automations:
       - action: send-slack-message@v1
         args:
           message: "Hello world :tada: from {{ pr.author }} in {{ pr.url }}"
-          webhook_url: "https://hooks.slack.com/services/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"
+          webhook_url: "https://hooks.slack.com/services/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"
