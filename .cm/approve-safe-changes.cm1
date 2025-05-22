@@ -1,81 +1,27 @@
+# -*- mode: yaml -*-
+
 manifest:
   version: 1.0
-config:
-  ignore_repositories:
-    - scm-control
-triggers:
-  on:
-    - merge
-
 automations:
-  
-  # General Safe Changes
-  safe_changes:
-    on:
-      - commit
+  approve_sonar_clean_code:
     if:
-      - {{ is.formatting or is.docs or is.tests or is.images }}
+      - {{ sonar.bugs.rating == 'A' }}
+      - {{ sonar.code_smells.rating == 'A' }}
+      - {{ sonar.vulnerabilities.rating == 'A' }}
+      - {{ sonar.security_hotspots.rating == 'A' }}
+      - {{ sonar.duplications == null or sonar.duplications == 0 }}
     run: 
       - action: add-label@v1
         args:
-          label: 'safe-changes'
+          label: '✅ Sonar: Clean Code'
+          color: {{ colors.green }}
       - action: approve@v1
-  # Dependabot PRs
-  dependabot_pr:
-    if:
-      - {{ pr.author | includes(term='dependabot') }}
-    run:
-      - action : add-comment@v1
+      - action: add-comment@v1
         args:
           comment: |
-            This PR was created by {{ pr.author }} who is eligible for auto-approval in this organization.
-      - action: approve@v1
-  # Single Log Changes for Java / Kotlin
-  log_changes_in_java:
-    if: 
-      - {{ files | match(regex=r/\.java$|\.kt$/) | every }}
-      - {{ files | length == 1 }}
-      - {{ source.diff.files | matchDiffLines(regex=r/^[+-].*log\.(trace|debug|info|warn|error)/, ignoreWhiteSpaces=true) | every }}
-    run: 
-      - action: add-label@v1
-        args:
-          label: 'logging-changes'
-      - action: approve@v1
-  # Single Log Changes for JavaScript / TypeScript
-  log_changes_in_js:
-    if: 
-      - {{ files | match(regex=r/\.js$|\.ts$/) | every }}
-      - {{ files | length == 1 }}
-      - {{ source.diff.files | matchDiffLines(regex=r/^[+-].*console\.log/, ignoreWhiteSpaces=true) | every }}
-    run: 
-      - action: add-label@v1
-        args:
-          label: 'logging-changes'
-      - action: approve@v1
-  # Single Log Changes for Python
-  log_changes_in_py:
-    if: 
-      - {{ files | match(regex=r/\.py$/) | every }}
-      - {{ files | length == 1 }}
-      - {{ source.diff.files | matchDiffLines(regex=r/^[+-].*logger\.(trace|debug|info|warn|error)/, ignoreWhiteSpaces=true) | every }}
-    run: 
-      - action: add-label@v1
-        args:
-          label: 'logging-changes'
-      - action: approve@v1
-  # Single Log Changes for C#
-  log_changes_in_cs:
-    if: 
-      - {{ files | match(regex=r/\.cs$/) | every }}
-      - {{ files | length == 1 }}
-      - {{ source.diff.files | matchDiffLines(regex=r/^[+-].*log\.(trace|debug|info|warn|error)/, caseSensitive=false, ignoreWhiteSpaces=true) | every }}
-    run: 
-      - action: add-label@v1
-        args:
-          label: 'logging-changes'
-      - action: approve@v1
-is:
-  formatting: {{ source.diff.files | isFormattingChange }}
-  docs: {{ files | allDocs }}
-  tests: {{ files | allTests }}
-  images: {{ files | allImages }}
+            This PR passes the SonarCloud quality gate check and as been automatically approved.
+
+sonar: {{ pr | extractSonarFindings }}
+
+colors:
+  green: '0e8a16'
