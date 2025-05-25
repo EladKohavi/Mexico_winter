@@ -1,11 +1,5 @@
 # -*- mode: yaml -*-
 
-
-    vulnerabilities: { count: null, rating: '' },
-    security_hotspots: { count: null, rating: '' },
-    duplications: null,
-    coverage: null,
-
 manifest:
   version: 1.0
 automations:
