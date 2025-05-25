@@ -10,11 +10,3 @@ automations:
       - action: add-label@v1
         args:
           label: '1'
-  automation2:
-    if:
-      - true
-    run: 
-      - action: send-slack-message@v1
-        args:
-          message: "Hello hello"
-          webhook_url: {{ env.ELAD_WEBHOOK }}
