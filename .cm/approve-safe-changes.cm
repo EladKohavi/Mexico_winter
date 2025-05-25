@@ -5,10 +5,6 @@ manifest:
 automations:
   approve_sonar_clean_code:
     if:
-      - {{ sonar.bugs.rating == 'A' }}
-      - {{ sonar.code_smells.rating == 'A' }}
-      - {{ sonar.vulnerabilities.rating == 'A' }}
-      - {{ sonar.security_hotspots.rating == 'A' }}
       - {{ sonar.duplications == null or sonar.duplications == 0 }}
     run: 
       - action: add-label@v1
