@@ -72,7 +72,7 @@ jobs:
           path: variables.txt
 
       - name: Evaluate Rules
-        uses: linear-b/gitstream-github-action@LINBEE-16727-adjust_support_of_sonar
+        uses: linear-b/gitstream-github-action@LINBEE-16727-adjust_support_of_sonar_1
         id: rules-engine
         with:
           full_repository: ${{ github.event.inputs.full_repository }}
