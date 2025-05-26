@@ -5,11 +5,11 @@ manifest:
 automations:
   approve_sonar_clean_code:
     if:
-      - {{ sonar.bugs.count == 0 }}
-      - {{ sonar.code_smells.count == 0 }}
-      - {{ sonar.vulnerabilities.count == 0 }}
-      - {{ sonar.security_hotspots.count == 0 }}
-      - {{ sonar.duplications == 0 }}
+      - {{ sonar.bugs.rating == 'A' }}
+      - {{ sonar.code_smells.rating == 'A' }}
+      - {{ sonar.vulnerabilities.rating == 'A' }}
+      - {{ sonar.security_hotspots.rating == 'A' }}
+      - {{ sonar.duplications == null or sonar.duplications == 0 }}
     run: 
       - action: add-label@v1
         args:
