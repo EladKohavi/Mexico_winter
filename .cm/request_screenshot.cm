@@ -16,7 +16,6 @@ automations:
       - action: add-label@v1
         args:
           label: "triggered-created"
-          color: #660076
 
   request_screenshot:
     # Triggered for PRs that lack an image file or link to an image in the PR description
