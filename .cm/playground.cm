@@ -4,10 +4,6 @@
 manifest:
   version: 1.0
 
-triggers:
-  on:
-    - label_added
-
 automations:
   # Add a label that indicates how many minutes it will take to review the PR.
   estimated_time_to_review:
@@ -39,9 +35,10 @@ automations:
     if:
       - true
     run:
-      - action: explain-code-experts@v1 
-        args:
-          gt: 10
+      # - action: explain-code-experts@v1 
+      #  args:
+      #    gt: 10
+      - action: code-review@v1
 
 # +----------------------------------------------------------------------------+
 # | Custom Expressions                                                         |
