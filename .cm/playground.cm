@@ -30,14 +30,11 @@ automations:
             This PR is missing a Jira ticket reference in the title or description.
             Please add a Jira ticket reference to the title or description of this PR.
 
-  # Post a comment that lists the best experts for the files that were modified.
-  explain_code_experts:
+
+  code_review_automation:
     if:
       - true
     run:
-      # - action: explain-code-experts@v1 
-      #  args:
-      #    gt: 10
       - action: code-review@v1
 
 # +----------------------------------------------------------------------------+
