@@ -1,0 +1,25 @@
+# -*- mode: yaml -*-
+# This example configuration for provides basic automations to get started with gitStream.
+# View the gitStream quickstart for more examples: https://docs.gitstream.cm/examples/
+manifest:
+  version: 1.0
+
+automations:
+  # Add a label that indicates how many minutes it will take to review the PR.
+  estimated_time_to_review:
+    if:
+      - true
+    run:
+      - action: add-label@v1
+        args:
+          label: "playground1"
+
+  code_review_automation:
+    on:
+      - label_added
+    if:
+      - true
+    run:
+      - action: explain-code-experts@v1
+        args:
+          gt: 10
