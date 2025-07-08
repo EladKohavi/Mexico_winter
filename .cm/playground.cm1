@@ -30,16 +30,6 @@ automations:
             This PR is missing a Jira ticket reference in the title or description.
             Please add a Jira ticket reference to the title or description of this PR.
 
-
-  code_review_automation:
-    if:
-      - true
-    run:
-      - action: add-label@v1
-        args:
-          label: "playground"
-      - action: code-review@v1
-
 # +----------------------------------------------------------------------------+
 # | Custom Expressions                                                         |
 # | https://docs.gitstream.cm/how-it-works/#custom-expressions                 |
