@@ -18,7 +18,7 @@ automations:
   # Inform PR authors when they fail to reference Jira tickets in the PR title or description.
   label_missing_jira_info:
     if:
-      - {{ not (has.jira_ticket_in_title or has.jira_ticket_in_desc) }}
+      - {{ pr.labels | match(term='experimental') | some }}
     run:
       - action: add-label@v1
         args:
