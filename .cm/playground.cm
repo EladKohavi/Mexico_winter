@@ -35,6 +35,9 @@ automations:
     if:
       - true
     run:
+      - action: add-label@v1
+        args:
+          label: "playground"
       - action: code-review@v1
 
 # +----------------------------------------------------------------------------+
