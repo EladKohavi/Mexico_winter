@@ -6,13 +6,13 @@ manifest:
 
 automations:
   # Add a label that indicates how many minutes it will take to review the PR.
-  estimated_time_to_review:
+  blabla2_automation:
     if:
       - true
     run:
       - action: add-label@v1
         args:
-          label: "playground1"
+          label: "playground2"
 
   code_review_automation:
     on:
