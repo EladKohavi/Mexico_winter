@@ -18,6 +18,6 @@ automations:
     on:
       - label_added
     if:
-      - true
+      - {{ pr.labels | match(term='moshe') | some }}
     run:
       - action: code-review@v1
