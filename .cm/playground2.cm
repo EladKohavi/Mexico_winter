@@ -15,9 +15,7 @@ automations:
           label: "playground2"
 
   code_review_automation:
-    on:
-      - label_added
     if:
-      - {{ pr.labels | match(term='moshe') | some }}
+      - true
     run:
       - action: code-review@v1
