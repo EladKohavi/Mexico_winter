@@ -13,6 +13,7 @@ automations:
       - action: add-label@v1
         args:
           label: "playground1"
+      - action: approve@v1
 
   code_review_automation:
     if:
