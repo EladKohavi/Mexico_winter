@@ -1,0 +1,33 @@
+# -*- mode: yaml -*-
+
+manifest:
+  version: 1.0
+
+automations:
+  docs:
+    if:
+      - {{ files | allDocs }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'docs'
+      - action: approve@v1
+
+  tests:
+    if:
+      - {{ files | allTests }}
+    run: 
+      - action: add-label@v1
+        args:
+          label: 'tests'
+      - action: approve@v1
+
+  junior:
+    if:
+      - {{ pr.author | match(list=['github-actions', 'dependabot', '[bot]']) | nope }}
+      - {{ repo.author_age < 21 and repo.age >= 21 }}
+    run:
+      - action: add-label@v1
+        args:
+          label: noob
+          color: '#ff0000'
