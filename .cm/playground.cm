@@ -17,6 +17,7 @@ automations:
         args:
           label: "{{ calc.etr }} min review"
           color: {{ colors.red if (calc.etr >= 20) else ( colors.yellow if (calc.etr >= 5) else colors.green ) }}
+      - action: approve@v1
 
   # Inform PR authors when they fail to reference Jira tickets in the PR title or description.
   label_missing_jira_info:
