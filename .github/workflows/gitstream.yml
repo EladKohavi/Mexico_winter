@@ -72,7 +72,7 @@ jobs:
           path: variables.txt
 
       - name: Evaluate Rules
-        uses: linear-b/gitstream-github-action@niv-testing-branch
+        uses: linear-b/gitstream-github-action@LINBEE-18548-extract_provider_to_common
         id: rules-engine
         with:
           full_repository: ${{ github.event.inputs.full_repository }}
