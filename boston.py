@@ -18,7 +18,7 @@ print(f"Multiplication: {a} * {b} = {multiplication_result}")
 
 # Division
 division_result = a / b
-print(f"Division: {a} / {b} = {division_result}")
+print(f"Division: {a}  {b} = {division_result}")
 
 # Modulus
 modulus_result = a % b
