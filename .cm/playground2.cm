@@ -19,4 +19,3 @@ automations:
       - true
     run:
       - action: code-review@v1
-      - action: approve@v1
