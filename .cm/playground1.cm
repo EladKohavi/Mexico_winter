@@ -8,8 +8,8 @@ automations:
   # Add a label that indicates how many minutes it will take to review the PR.
   blabla_automation:
     if:
-      - {{ not pr.draft }}
-      - {{ not is.Elad }}
+      - {{ not is.Moshe }}
+      - {{ is.Elad }}
     run:
       - action: add-label@v1
         args:
@@ -28,6 +28,16 @@ is:
   Elad: >-
     {{ pr.author | match(list=[
         'Elad', 
+        '[bot]', 
+        'project_35771297_bot_558e119f0f4d33f2fc8b315e66d53c86', 
+        'group_14117954_bot_085a90599cd4653c9aa736ce6538ae23', 
+        'project_35771297_bot_3baa505335b81595ea1f502563700a41'
+    ]) | some }}
+
+is:
+  Moshe: >-
+    {{ pr.author | match(list=[
+        'Moshe', 
         '[bot]', 
         'project_35771297_bot_558e119f0f4d33f2fc8b315e66d53c86', 
         'group_14117954_bot_085a90599cd4653c9aa736ce6538ae23', 
