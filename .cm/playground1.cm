@@ -12,8 +12,7 @@ automations:
     run:
       - action: add-label@v1
         args:
-          label: "playground1"
-
+          label: {{ bump_type }}
 
   code_review_automation:
     if:
@@ -32,3 +31,5 @@ is:
         'group_14117954_bot_085a90599cd4653c9aa736ce6538ae23', 
         'project_35771297_bot_3baa505335b81595ea1f502563700a41'
     ]) | some }}
+
+bump_type: {{ ["1.2.3", "1.2.1"] | checkSemver }}  # Returns "patch"
