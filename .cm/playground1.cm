@@ -14,13 +14,6 @@ automations:
         args:
           label: {{ bump_type }}
 
-  code_review_automation:
-    if:
-      - true
-    run:
-      - action: explain-code-experts@v1
-        args:
-          gt: 10
 
 is:
   Elad: >-
