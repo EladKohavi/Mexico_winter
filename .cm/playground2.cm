@@ -15,3 +15,10 @@ automations:
       - action: add-label@v1
         args:
           label: "playground2"
+  blabla22_automation:
+    if:
+      - true
+    run:
+      - action: add-label@v1
+        args:
+          label: "playground22"
