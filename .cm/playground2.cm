@@ -7,18 +7,9 @@ manifest:
 automations:
   # Add a label that indicates how many minutes it will take to review the PR.
   blabla2_automation:
-    on:
-      - commit
     if:
-      - true
+      - {{ pr.labels | match(term='suggest-reviewer') | some }}
     run:
       - action: add-label@v1
         args:
           label: "playground2"
-  blabla22_automation:
-    if:
-      - true
-    run:
-      - action: add-label@v1
-        args:
-          label: "playground22"
