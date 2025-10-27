@@ -1,4 +1,4 @@
-# 🚀 Project Name
+# 🚀 Mexico Winter
 
 A short description of what your project does and why it’s useful.  
 (Example: *A lightweight service that syncs GitHub issues to Jira in real-time.*)
