@@ -7,6 +7,6 @@ automations:
     if:
       - true
     run: 
-      - action: add-label@v1
+      - action: code-review@v1
         args:
-          label: '1'
+          approve_on_LGTM: true
