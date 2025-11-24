@@ -1,7 +1,7 @@
 # Basic Operations in Python
 
 # Variables
-a = 10
+a = 12 + 20
 b = 5
 
 # Addition
