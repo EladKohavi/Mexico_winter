@@ -2,6 +2,11 @@
 manifest:
   version: 1.0
 
+triggers:
+  exclude:
+    user:
+      -MishaKav
+
 automations:
   automation1:
     if:
