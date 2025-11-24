@@ -72,7 +72,7 @@ jobs:
           path: variables.txt
 
       - name: Evaluate Rules
-        uses: linear-b/gitstream-github-action@v2
+        uses: linear-b/gitstream-github-action@LINBEE-20487-triggers_per_user
         id: rules-engine
         with:
           full_repository: ${{ github.event.inputs.full_repository }}
