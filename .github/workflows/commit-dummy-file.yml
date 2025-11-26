@@ -1,0 +1,47 @@
+  name: Commit Dummy File to Branch
+
+  on:
+    workflow_dispatch:
+      inputs:
+        branch_name:
+          description: 'Branch to commit to'
+          required: true
+          default: 'main'
+        file_name:
+          description: 'Name of the dummy file'
+          required: false
+          default: 'dummy-file.md'
+        commit_message:
+          description: 'Commit message'
+          required: false
+          default: 'Add dummy file via GitHub Actions'
+
+  jobs:
+    commit-dummy-file:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            token: ${{ secrets.MISHA_PAT }}
+            ref: ${{ github.event.inputs.branch_name }}
+
+        - name: Create dummy file
+          run: |
+            FILENAME="${{ github.event.inputs.file_name }}"
+            echo "# Dummy File" > "$FILENAME"
+            echo "" >> "$FILENAME"
+            echo "This is a dummy file created by GitHub Actions." >> "$FILENAME"
+            echo "Created on: $(date)" >> "$FILENAME"
+            echo "Branch: ${{ github.event.inputs.branch_name }}" >> "$FILENAME"
+            echo "Workflow run ID: ${{ github.run_id }}" >> "$FILENAME"
+
+        - name: Commit and push changes
+          env:
+            GITHUB_TOKEN: ${{ secrets.MISHA_PAT }}
+          run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add "${{ github.event.inputs.file_name }}"
+            git commit -m "${{ github.event.inputs.commit_message }}"
+            git push origin "${{ github.event.inputs.branch_name }}"
