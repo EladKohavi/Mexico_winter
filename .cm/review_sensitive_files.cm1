@@ -4,8 +4,6 @@ manifest:
 
 automations:
   tester:
-    on:
-      - pr_created
     if:
       - true
     run:
@@ -13,3 +11,4 @@ automations:
         args:
           label: "triggered by pr created"
           color: #660066
+
