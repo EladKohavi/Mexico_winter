@@ -36,10 +36,10 @@
 
         - name: Create dummy file
           run: |
-            echo "# Dummy File" > dummy-file-$(date +%s).md
-            echo "This is a dummy file created by GitHub Actions." >>
-  dummy-file-$(date +%s).md
-            echo "Created on: $(date)" >> dummy-file-$(date +%s).md
+            FILENAME="dummy-file-$(date +%s).md"
+            echo "# Dummy File" > "$FILENAME"
+            echo "This is a dummy file created by GitHub Actions." >> "$FILENAME"
+            echo "Created on: $(date)" >> "$FILENAME"
 
         - name: Commit and push changes
           env:
