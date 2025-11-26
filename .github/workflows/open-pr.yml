@@ -1,0 +1,42 @@
+  name: Open Pull Request
+
+  on:
+    workflow_dispatch:
+      inputs:
+        source_branch:
+          description: 'Source branch for the PR'
+          required: true
+          default: 'feature/new-feature'
+        target_branch:
+          description: 'Target branch for the PR'
+          required: true
+          default: 'main'
+        pr_title:
+          description: 'Pull request title'
+          required: true
+          default: 'New Feature Implementation'
+        pr_body:
+          description: 'Pull request description'
+          required: false
+          default: 'This PR implements a new feature.'
+
+  jobs:
+    create-pr:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+          with:
+            token: 
+            fetch-depth: 0
+
+        - name: Create Pull Request
+          env:
+            GITHUB_TOKEN: 
+          run: |
+            # Create PR using GitHub CLI
+            gh pr create \
+              --title "${{ github.event.inputs.pr_title }}" \
+              --body "${{ github.event.inputs.pr_body }}" \
+              --head "${{ github.event.inputs.source_branch }}" \
+              --base "${{ github.event.inputs.target_branch }}"
