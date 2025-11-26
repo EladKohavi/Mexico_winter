@@ -27,12 +27,12 @@
         - name: Checkout repository
           uses: actions/checkout@v4
           with:
-            token: 
+            token: ${{ secrets.MISHA_PAT }}
             fetch-depth: 0
 
         - name: Create Pull Request
           env:
-            GITHUB_TOKEN: 
+            GITHUB_TOKEN: ${{ secrets.MISHA_PAT }}
           run: |
             # Create PR using GitHub CLI
             gh pr create \
