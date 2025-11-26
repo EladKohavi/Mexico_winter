@@ -1,5 +1,5 @@
   name: Open Pull Request
-
+  
   on:
     workflow_dispatch:
       inputs:
@@ -30,11 +30,31 @@
             token: ${{ secrets.MISHA_PAT }}
             fetch-depth: 0
 
+        - name: Create and switch to new branch
+          run: |
+            git checkout -b "${{ github.event.inputs.source_branch }}"
+
+        - name: Create dummy file
+          run: |
+            echo "# Dummy File" > dummy-file-$(date +%s).md
+            echo "This is a dummy file created by GitHub Actions." >>
+  dummy-file-$(date +%s).md
+            echo "Created on: $(date)" >> dummy-file-$(date +%s).md
+
+        - name: Commit and push changes
+          env:
+            GITHUB_TOKEN: ${{ secrets.MISHA_PAT }}
+          run: |
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add .
+            git commit -m "Add dummy file for PR"
+            git push origin "${{ github.event.inputs.source_branch }}"
+
         - name: Create Pull Request
           env:
             GITHUB_TOKEN: ${{ secrets.MISHA_PAT }}
           run: |
-            # Create PR using GitHub CLI
             gh pr create \
               --title "${{ github.event.inputs.pr_title }}" \
               --body "${{ github.event.inputs.pr_body }}" \
