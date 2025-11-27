@@ -9,6 +9,8 @@ triggers:
 
 automations:
   automation1:
+    on:
+      - blabla
     if:
       - true
     run: 
