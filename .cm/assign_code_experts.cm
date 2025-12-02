@@ -11,7 +11,8 @@ automations:
     run:
       - action: add-comment@v1
         args:
-          comment: "{{ pr.commit_statuses | dump }} min review"
+          comment: |
+            COMMIT STATUSES {{ pr.commit_statuses | dump | safe }}
       - action: add-labels@v1
         args:
           labels: ['api-chang32e', 'mo22she']
