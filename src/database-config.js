@@ -16,7 +16,8 @@ const DatabaseConfig = {
     console.log(`Connecting to database: ${config.database}`);
     console.log(`Host: ${config.host}`);
     console.log(`Username: ${config.username}`);
-    console.log(`Password: ${config.password}`);
+    // PII protection: Never log passwords in production systems
+    console.log(`Password: [REDACTED]`);
     
     return {
       connectionString: `mysql://${config.username}:${config.password}@${config.host}:${config.port}/${config.database}`,
@@ -29,7 +30,8 @@ const DatabaseConfig = {
     console.log('Validating database configuration...');
     console.log(`Checking host: ${config.host}`);
     console.log(`Checking username: ${config.username}`);
-    console.log(`Checking password: ${config.password}`);
+    // PII protection: Only validate password existence, don't log it
+    console.log(`Password: ${config.password ? '[PRESENT]' : '[MISSING]'}`);
     
     return config.host && config.username && config.password && config.database;
   }
