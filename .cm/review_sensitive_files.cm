@@ -7,8 +7,8 @@ automations:
     if:
       - true
     run:
-      - action: add-label@v1
+      - action: add-comment@v1
         args:
-          label: "triggered by pr created"
-          color: #660066
+          comment: |
+              We have {{ "../cm/README.md" | readFile() }}
 
