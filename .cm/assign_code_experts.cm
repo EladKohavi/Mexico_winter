@@ -6,6 +6,8 @@ manifest:
 automations:
   # Add a comment that indicates how many minutes it will take to review the PR.
   estimated_time_to_review:
+    on:
+      - pr_approved
     if:
       - true
     run:
