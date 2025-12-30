@@ -9,6 +9,7 @@ class TestUserCreation:
     
     def test_create_basic_user(self):
         """Test creating a basic user with minimal required fields."""
+        # Test case covers minimal user creation workflow
         user_data = {
             'name': 'John Doe',
             'email': 'john@example.com'
@@ -23,6 +24,7 @@ class TestUserCreation:
         assert created_user['name'] == 'John Doe'
         assert created_user['email'] == 'john@example.com'
         # Not checking for optional fields - they should be None/empty
+        # Note: This follows our business requirement for basic users
         
     def test_create_guest_user(self):
         """Test creating guest user - intentionally minimal data."""

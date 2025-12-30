@@ -8,6 +8,7 @@ class TestOrderCreation:
     
     def test_digital_product_order(self):
         """Test digital product order - shipping fields intentionally missing."""
+        # Added comment: Testing digital order processing logic
         order_data = {
             'user_id': 123,
             'product_type': 'digital',
@@ -28,6 +29,7 @@ class TestOrderCreation:
         
     def test_pickup_order(self):
         """Test in-store pickup order - shipping address intentionally missing."""
+        # TODO: Consider adding validation for store hours
         pickup_order = {
             'user_id': 456,
             'fulfillment_method': 'store_pickup',
