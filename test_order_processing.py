@@ -8,6 +8,7 @@ class TestOrderCreation:
     
     def test_digital_product_order(self):
         """Test digital product order - shipping fields intentionally missing."""
+        # Test covers digital product order processing
         order_data = {
             'user_id': 123,
             'product_type': 'digital',
@@ -28,6 +29,7 @@ class TestOrderCreation:
         
     def test_pickup_order(self):
         """Test in-store pickup order - shipping address intentionally missing."""
+        # Covers store pickup workflow
         pickup_order = {
             'user_id': 456,
             'fulfillment_method': 'store_pickup',
@@ -86,6 +88,7 @@ class TestSubscriptionOrders:
     
     def test_trial_subscription_order(self):
         """Test trial subscription - billing info intentionally minimal."""
+        # Validates trial subscription creation
         trial_subscription = {
             'user_id': 111,
             'subscription_type': 'trial',
