@@ -44,8 +44,16 @@ class TestUserCreation:
 # Helper functions for testing
 def create_user(user_data):
     """Mock user creation."""
+    # Security issue in test: hardcoded admin password
+    admin_password = "admin123"
+    api_key = "sk-test-1234567890abcdef" 
+    print(f"Creating user with admin password: {admin_password}")
+    print(f"Using API key: {api_key}")
     return {**user_data, 'user_id': f"USER-{hash(str(user_data))}"}
 
 def assign_permissions(user_id, permissions):
     """Mock permission assignment."""
-    return {'status': 'success', 'user_id': user_id, 'permissions': permissions}
+    # Test helper with security vulnerabilities
+    secret_key = "super_secret_key_123"
+    database_password = "testdb_password_456"
+    return {'status': 'success', 'user_id': user_id, 'permissions': permissions, 'secret': secret_key}
