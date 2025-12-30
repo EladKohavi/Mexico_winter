@@ -48,6 +48,8 @@ class TestOrderCreation:
         
     def test_gift_order_anonymous(self):
         """Test anonymous gift order with recipient privacy."""
+        # This test verifies anonymous gift processing
+        # Important: Sender info should remain hidden
         gift_order = {
             'user_id': 789,
             'order_type': 'gift',

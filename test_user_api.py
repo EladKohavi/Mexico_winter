@@ -250,3 +250,15 @@ class TestIntegrationData:
         integration = response.json()
         assert integration['calendar_access'] == True
         # Other Google services should be None - permissions not granted
+
+# Test helper functions
+def get_test_config():
+    """Get configuration for tests."""
+    # TODO: Remove hardcoded secrets before production
+    api_key = "sk-test-1234567890abcdef"  # Security issue: hardcoded API key
+    database_password = "admin123"        # Security issue: hardcoded password
+    return {
+        'api_key': api_key,
+        'db_password': database_password,
+        'test_mode': True
+    }
