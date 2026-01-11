@@ -8,8 +8,16 @@ automations:
   # Add a label that indicates how many minutes it will take to review the PR.
   blabla2_automation:
     if:
-      - {{ pr.labels | match(term='suggest-reviewer') | some }}
+      - {{ pr.labels | match(term='draft') | some }}
     run:
-      - action: add-label@v1
+      - action: change-pr-state@v1
         args:
-          label: "playground2"
+          draft: true
+
+  blabla3_automation:
+    if:
+      - {{ pr.labels | match(term='no-draft') | some }}
+    run:
+      - action: change-pr-state@v1
+        args:
+          draft: false
