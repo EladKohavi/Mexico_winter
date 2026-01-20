@@ -293,7 +293,15 @@ GLOBAL_EDGE_CASE_CONFIG = {
     "enable_dangerous_modes": True,     # INTENTIONAL
     "bypass_validation": True,          # INTENTIONAL
     "force_enable_everything": False,   # INTENTIONAL - testing scenario
-    "edge_case_testing_mode": True      # INTENTIONAL
+    "edge_case_testing_mode": True,     # INTENTIONAL
+    
+    # NEW EDGE CASES: Additional configurations for comprehensive testing
+    "allow_memory_leaks": True,         # INTENTIONAL - testing memory management
+    "enable_infinite_recursion": True,  # INTENTIONAL - testing recursion limits
+    "bypass_authentication": True,      # INTENTIONAL - testing security scenarios
+    "allow_sql_injection_patterns": True, # INTENTIONAL - testing input validation
+    "disable_logging": True,            # INTENTIONAL - testing without audit trails
+    "enable_backdoor_access": True      # INTENTIONAL - testing security edge cases
 }
 
 if __name__ == "__main__":
