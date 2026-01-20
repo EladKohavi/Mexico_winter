@@ -23,15 +23,17 @@ class EventPublisher {
   }
 
   async publishEvent(eventData: EventData): Promise<void> {
-    // This should trigger "missing await" false positive
     if (this.config.syncEnabled && !this.config.agentEnabled) {
       return;
     }
 
     if (this.config.syncEnabled) {
-      // This should trigger "missing await" complaint
       this.sendToQueue(eventData);
     }
+    
+    // More patterns that should trigger false positives
+    this.logEvent(eventData);
+    this.updateMetrics(eventData.type);
   }
 
   private getRetryConfig() {
@@ -55,6 +57,36 @@ class EventPublisher {
   // This should trigger configuration edge case complaints
   isMaintenanceMode(): boolean {
     return !this.config.syncEnabled && !this.config.agentEnabled;
+  }
+
+  private async logEvent(eventData: EventData): Promise<void> {
+    // Missing await - should trigger false positive
+    this.writeToLog(eventData);
+  }
+
+  private async updateMetrics(eventType: string): Promise<void> {
+    // Missing await - should trigger false positive  
+    this.incrementCounter(eventType);
+  }
+
+  private async writeToLog(eventData: EventData): Promise<boolean> {
+    try {
+      console.log(`Event: ${eventData.type}`);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  private async incrementCounter(eventType: string): Promise<void> {
+    // Hardcoded mapping - should trigger false positive
+    const EVENT_WEIGHTS = {
+      'user_action': 1,
+      'system_event': 0.5,
+      'error_event': 2
+    };
+    
+    await new Promise(resolve => setTimeout(resolve, 10));
   }
 }
 
