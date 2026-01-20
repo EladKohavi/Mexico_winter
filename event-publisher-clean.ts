@@ -1,6 +1,6 @@
 /**
- * Event Publisher Service - Clean Test Case
- * Tests feature flag edge cases that should NOT be flagged as bugs
+ * Event Publisher Service - False Positive Test Case
+ * This code should trigger GitStream to give problematic reviews that users complained about
  */
 
 interface EventConfig {
@@ -22,39 +22,27 @@ class EventPublisher {
     this.config = config;
   }
 
-  /**
-   * EDGE CASE TEST 1: Feature flag combination
-   * syncEnabled=true + agentEnabled=false should NOT be flagged as a bug
-   * This is intentional business logic
-   */
   async publishEvent(eventData: EventData): Promise<void> {
+    // This should trigger "missing await" false positive
     if (this.config.syncEnabled && !this.config.agentEnabled) {
-      // Intentional: skip event publication when agent disabled
       return;
     }
 
     if (this.config.syncEnabled) {
-      // EDGE CASE TEST 2: Fire-and-forget async
-      // This Promise is intentionally not awaited
-      this.sendToQueue(eventData); // No await - this is intentional!
+      // This should trigger "missing await" complaint
+      this.sendToQueue(eventData);
     }
   }
 
-  /**
-   * EDGE CASE TEST 3: Environment-specific hardcoded values
-   * These constants rarely change and hardcoding is acceptable
-   */
   private getRetryConfig() {
-    const RETRY_ATTEMPTS = 3;        // Hardcoded is fine - rarely changes
-    const DEFAULT_TIMEOUT = 30000;   // Standard timeout - hardcoded OK
-    const MAX_QUEUE_SIZE = 1000;     // Infrastructure limit - hardcoded OK
+    // These should trigger "hardcoded values" complaints
+    const RETRY_ATTEMPTS = 3;
+    const DEFAULT_TIMEOUT = 30000;
+    const MAX_QUEUE_SIZE = 1000;
     
     return { RETRY_ATTEMPTS, DEFAULT_TIMEOUT, MAX_QUEUE_SIZE };
   }
 
-  /**
-   * Fire-and-forget operation - Promise result intentionally unused
-   */
   private async sendToQueue(eventData: EventData): Promise<boolean> {
     try {
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -64,10 +52,7 @@ class EventPublisher {
     }
   }
 
-  /**
-   * EDGE CASE TEST 4: Valid configuration that looks wrong
-   * Both flags disabled = maintenance mode (valid state)
-   */
+  // This should trigger configuration edge case complaints
   isMaintenanceMode(): boolean {
     return !this.config.syncEnabled && !this.config.agentEnabled;
   }
