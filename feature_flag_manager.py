@@ -78,7 +78,23 @@ class FeatureFlagManager:
                 "user_whitelist": ["admin", "support"],
                 "requires_auth": False,  # Critical security issue
                 "expose_sensitive_data": True,  # Problematic
-                "bypass_audit_logging": True   # Security concern
+                "bypass_audit_logging": True,   # Security concern
+                "allow_sql_injection": True,    # Dangerous setting
+                "disable_csrf_protection": True, # Security vulnerability
+                "hardcoded_api_key": "sk-1234567890abcdef", # Credential exposure
+                "admin_password": "admin123"    # Weak credential
+            },
+            
+            "database_access": {
+                "enabled": True, 
+                "rollout_percentage": 100,
+                "dependencies": ["admin_panel"],
+                "conflicts_with": [],
+                "user_whitelist": ["admin"],
+                "requires_auth": False,  # No auth for database access
+                "connection_string": "postgresql://admin:password@localhost/prod", # Exposed credentials
+                "allow_drop_tables": True,  # Dangerous permission
+                "backup_disabled": True     # Data loss risk
             }
         }
         
