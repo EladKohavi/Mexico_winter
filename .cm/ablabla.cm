@@ -2,11 +2,6 @@
 manifest:
   version: 1.0
 
-triggers:
-  exclude:
-    users:
-      - MishaKav
-
 automations:
   automation1:
     if:
