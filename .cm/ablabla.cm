@@ -5,7 +5,7 @@ manifest:
 automations:
   automation1:
     if:
-      - true
+      - false
     run: 
       - action: code-review@v1
         args:
