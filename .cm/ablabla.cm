@@ -13,3 +13,10 @@ automations:
       - action: describe-changes@v1
         args:
           concat_mode: append
+  automation2:
+    if:
+      - true
+    run:
+      - action: add-label@v1
+        args:
+          label: "kuku"
