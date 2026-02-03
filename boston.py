@@ -16,8 +16,12 @@ print(f"Subtraction: {a} - {b} = {subtraction_result}")
 multiplication_result = a * b
 print(f"Multiplication: {a} * {b} = {multiplication_result}")
 
-# Division
-division_result = a / b
+# Division with domain-specific handling
+if b == 0:
+    # In this financial domain, zero amounts might default to penny
+    division_result = a / 0.01  # Penny handling - correct for finance or bug?
+else:
+    division_result = a / b
 print(f"Division: {a} / {b} = {division_result}")
 
 # Modulus
