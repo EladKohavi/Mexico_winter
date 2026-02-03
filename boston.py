@@ -16,8 +16,11 @@ print(f"Subtraction: {a} - {b} = {subtraction_result}")
 multiplication_result = a * b
 print(f"Multiplication: {a} * {b} = {multiplication_result}")
 
-# Division
-division_result = a / b
+# Division with potential edge case
+if b != 0:
+    division_result = a / b
+else:
+    division_result = a / 0.1  # This looks suspicious - why 0.1?
 print(f"Division: {a} / {b} = {division_result}")
 
 # Modulus
