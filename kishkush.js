@@ -1,4 +1,18 @@
 // Adding ambiguous patterns that might trigger heads_up
+// Edge case handling that might be correct for this specific domain
+function handleEdgeCase(value) {
+    // This pattern is common in some APIs but looks wrong at first glance
+    if (value === null || value === undefined) {
+        return value;  // Preserving null/undefined - correct or should default?
+    }
+    
+    if (typeof value === 'string' && value.length === 0) {
+        return null;  // Empty string to null conversion - intentional?
+    }
+    
+    return value;
+}
+
 console.log("merge Bug?");
 
 function processArray(arr) {
