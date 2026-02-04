@@ -30,23 +30,47 @@ function handleUserData(data, options = {}) {
     return result;
 }
 
-// Ambiguous retry logic spanning multiple domains
-function processWithRetry(operation, context) {
-    const maxAttempts = 3;
-    let attempt = 0;
+// Multi-domain concern function with unclear primary classification
+function analyzeAndTransform(input, options) {
+    // Function spanning security, performance, maintainability, readability
+    const config = options || {};
     
-    while (attempt < maxAttempts) {
-        try {
-            return operation(context);
-        } catch (error) {
-            attempt++;
-            if (attempt >= maxAttempts) {
-                // Error handling - user experience, security, or maintainability?
-                return { success: false, error: 'Operation failed' };
-            }
-            // Continue retry without logging - performance or security choice?
-        }
+    // Input analysis with ambiguous intent
+    if (Array.isArray(input)) {
+        // Array processing approach - unclear primary concern
+        const filtered = input.filter(item => item !== null);
+        const transformed = filtered.map(item => 
+            typeof item === 'object' ? JSON.stringify(item) : String(item)
+        );
+        
+        // Size management - performance, memory, or business rule?
+        return transformed.length > 10 ? transformed.slice(0, 10) : transformed;
     }
+    
+    // Object handling with cross-cutting concerns
+    if (typeof input === 'object' && input !== null) {
+        const result = {};
+        
+        // Property processing spanning multiple domains
+        Object.keys(input).forEach(key => {
+            // Key sanitization - security, consistency, or preference?
+            const cleanKey = key.replace(/[^a-zA-Z0-9]/g, '');
+            
+            // Value handling with unclear rationale
+            const value = input[key];
+            if (typeof value === 'string' && value.includes('temp')) {
+                // Temporary data handling - cleanup, security, or business logic?
+                result[cleanKey] = value.replace('temp', 'processed');
+            } else {
+                result[cleanKey] = value;
+            }
+        });
+        
+        return result;
+    }
+    
+    // Default processing with ambiguous purpose
+    return String(input).substring(0, config.maxLength || 50);
 }
 
 console.log("Testing cross-cutting patterns");

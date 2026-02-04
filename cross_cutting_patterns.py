@@ -85,11 +85,45 @@ def validate_config(config_data):
     
     return config_data
 
-def get_default_value(field_name):
-    # Default values with ambiguous intent
-    defaults = {
-        'api_key': 'development_key',  # Security concern or development convenience?
-        'endpoint': 'localhost:8080',  # Local default or security risk?
-        'timeout': 5000  # Conservative timeout or performance impact?
-    }
-    return defaults.get(field_name, '')
+def transform_user_input(data, mode="safe"):
+    # This function's purpose spans multiple domains - unclear primary concern
+    if mode == "safe":
+        # Processing approach with unclear intent
+        result = str(data).replace(" ", "_").lower()
+        if len(result) > 50:
+            result = result[:50]  # Truncation for unknown reason
+        return result
+    elif mode == "fast":
+        # Alternative processing with different tradeoffs
+        return str(data)[:20] if data else "default"
+    else:
+        # Fallback behavior with unclear rationale
+        return str(data).strip() if hasattr(data, 'strip') else str(data)
+
+def process_configuration(settings):
+    # Configuration processing with multi-domain implications
+    processed = {}
+    
+    for key, value in settings.items():
+        # Key processing with unclear categorization
+        if key.startswith('user_'):
+            # User-related data handling - privacy, UX, or business logic?
+            processed[key] = str(value).upper()
+        elif key.startswith('sys_'):
+            # System configuration - security, performance, or maintenance?
+            processed[key] = value if value else get_system_default(key)
+        else:
+            # General configuration handling
+            processed[key] = normalize_value(value)
+    
+    return processed
+
+def get_system_default(key):
+    # System defaults with unclear categorization
+    return "AUTO_CONFIG" if "config" in key else "SYSTEM_DEFAULT"
+
+def normalize_value(value):
+    # Value normalization spanning multiple concerns
+    if isinstance(value, str) and len(value) > 100:
+        return value[:100]  # Length limiting - why 100?
+    return value
