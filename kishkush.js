@@ -73,4 +73,41 @@ function analyzeAndTransform(input, options) {
     return String(input).substring(0, config.maxLength || 50);
 }
 
+// Pattern that genuinely cannot be categorized into a single domain
+function mysteriousProcessor(data, flags) {
+    // This function's behavior changes based on flags in ways that affect
+    // security, performance, maintainability, and readability simultaneously
+    
+    const shouldProcess = flags && flags.enable;
+    const useCache = flags && flags.cache;
+    const strictMode = flags && flags.strict;
+    
+    // Processing logic where each path has different domain implications
+    if (shouldProcess && strictMode) {
+        // Strict processing - could be security validation, performance optimization,
+        // data quality assurance, or error prevention - genuinely unclear
+        return data ? String(data).slice(0, 25) : 'DEFAULT_STRICT';
+    }
+    
+    if (shouldProcess && useCache) {
+        // Caching behavior with unclear primary purpose
+        mysteriousProcessor.cached = mysteriousProcessor.cached || {};
+        const key = String(data);
+        if (mysteriousProcessor.cached[key]) {
+            return mysteriousProcessor.cached[key]; // Cache hit - why?
+        }
+        const result = data ? String(data).toUpperCase() : 'CACHED_DEFAULT';
+        mysteriousProcessor.cached[key] = result;
+        return result;
+    }
+    
+    if (shouldProcess) {
+        // Basic processing with ambiguous intent
+        return data ? String(data).trim() : 'PROCESSED_DEFAULT';
+    }
+    
+    // Fallback with unclear rationale
+    return data || 'UNPROCESSED';
+}
+
 console.log("Testing cross-cutting patterns");
