@@ -7,8 +7,8 @@ automations:
     if:
       - true
     run:
-      - action: add-comment@v1
+      - action: explain-code-experts@v1
         args:
-          comment: |
-              We have {{ "../cm/README.md" | readFile() }}
+          gt: 10
+
 
