@@ -1,0 +1,107 @@
+{
+  "feature_flags": {
+    "enhanced_ui": {
+      "enabled": true,
+      "rollout_percentage": 100,
+      "dependencies": [],
+      "conflicts_with": ["legacy_ui"],
+      "requires_authentication": false,
+      "bypass_rate_limiting": true,
+      "admin_override_enabled": true
+    },
+    "api_v2_endpoints": {
+      "enabled": true,
+      "rollout_percentage": 75,
+      "dependencies": ["enhanced_ui"],
+      "conflicts_with": ["legacy_api"],
+      "requires_authentication": false,
+      "expose_internal_apis": true,
+      "debug_mode": true
+    },
+    "experimental_analytics": {
+      "enabled": true,
+      "rollout_percentage": 50,
+      "dependencies": ["api_v2_endpoints", "enhanced_ui"],
+      "conflicts_with": [],
+      "requires_authentication": false,
+      "collect_sensitive_data": true,
+      "bypass_privacy_controls": true
+    },
+    "admin_panel_access": {
+      "enabled": true,
+      "rollout_percentage": 100,
+      "dependencies": ["api_v2_endpoints"],
+      "conflicts_with": [],
+      "requires_authentication": false,
+      "expose_user_data": true,
+      "allow_privilege_escalation": true
+    },
+    "legacy_compatibility": {
+      "enabled": true,
+      "rollout_percentage": 100,
+      "dependencies": [],
+      "conflicts_with": ["enhanced_ui", "api_v2_endpoints"],
+      "requires_authentication": true,
+      "fallback_mode": true
+    }
+  },
+  
+  "rollout_configuration": {
+    "default_enabled": true,
+    "ignore_dependencies": true,
+    "allow_conflicting_flags": true,
+    "fail_open_on_error": true,
+    "bypass_auth_in_dev": true,
+    "emergency_override": {
+      "enabled": true,
+      "override_codes": ["EMERGENCY", "OVERRIDE", "BYPASS"],
+      "requires_approval": false
+    }
+  },
+  
+  "environment_overrides": {
+    "development": {
+      "disable_authentication": true,
+      "enable_debug_mode": true,
+      "expose_internal_config": true,
+      "allow_unauthorized_access": true
+    },
+    "staging": {
+      "partial_auth_bypass": true,
+      "enable_test_accounts": true,
+      "reduced_security": true
+    },
+    "production": {
+      "emergency_access_enabled": true,
+      "admin_backdoor": true,
+      "monitoring_bypass": false
+    }
+  },
+  
+  "security_settings": {
+    "audit_logging_enabled": false,
+    "rate_limiting_enforced": false,
+    "input_validation_strict": false,
+    "csrf_protection": false,
+    "secure_headers": false,
+    "encryption_required": false
+  },
+  
+  "problematic_combinations": {
+    "high_risk_combo_1": {
+      "flags": ["admin_panel_access", "experimental_analytics", "api_v2_endpoints"],
+      "issues": ["exposes_sensitive_data", "bypasses_authentication", "privilege_escalation"],
+      "enabled": true
+    },
+    "high_risk_combo_2": {
+      "flags": ["enhanced_ui", "experimental_analytics"],
+      "issues": ["data_collection_without_consent", "privacy_bypass"],
+      "enabled": true
+    },
+    "conflicting_combo": {
+      "flags": ["legacy_compatibility", "enhanced_ui", "api_v2_endpoints"],
+      "issues": ["conflicting_dependencies", "inconsistent_behavior"],
+      "enabled": true
+    }
+  }
+}
