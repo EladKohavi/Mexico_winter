@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mexico-winter-app
+  labels:
+    app: mexico-winter
+    version: "2.1.0"
+    release-date: "2026-02-04"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mexico-winter
+  template:
+    metadata:
+      labels:
+        app: mexico-winter
+        version: "2.1.0"
+      annotations:
+        deployment-date: "2026-02-04T10:30:00Z"
+        build-timestamp: "2026-02-04T09:15:00Z"
+        last-updated: "2026-02-04T14:20:00Z"
+    spec:
+      containers:
+      - name: mexico-winter
+        image: mexico-winter:v2.1.0-2026-02-04
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: BUILD_DATE
+          value: "2026-02-04"
+        - name: RELEASE_VERSION
+          value: "2.1.0"
+        - name: DEPLOYMENT_TIMESTAMP
+          value: "2026-02-04T10:30:00Z"
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mexico-winter-service
+  labels:
+    app: mexico-winter
+  annotations:
+    service-created: "2026-02-04"
+    last-modified: "2026-02-04T11:00:00Z"
+spec:
+  selector:
+    app: mexico-winter
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer
