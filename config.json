@@ -1,0 +1,41 @@
+{
+  "application": {
+    "name": "Mexico Winter App",
+    "version": "2.1.0",
+    "releaseDate": "2026-02-12",
+    "buildTimestamp": "2026-02-12T10:30:00Z"
+  },
+  "api": {
+    "version": "v2.1",
+    "baseUrl": "https://api.example.com",
+    "endpoints": {
+      "users": "/users",
+      "orders": "/orders",
+      "reports": "/reports"
+    },
+    "rateLimit": {
+      "requestsPerMinute": 1000,
+      "burstLimit": 50
+    }
+  },
+  "deployment": {
+    "environment": "production",
+    "deployedOn": "2026-02-12",
+    "lastUpdated": "2026-02-12T09:45:00Z",
+    "nextMaintenance": "2026-02-19"
+  },
+  "features": {
+    "dateValidation": true,
+    "enhancedLogging": true,
+    "securityScan": {
+      "enabled": true,
+      "lastScan": "2026-02-12",
+      "nextScan": "2026-02-19"
+    }
+  },
+  "metadata": {
+    "createdBy": "deployment-system",
+    "createdAt": "2026-02-12T08:00:00Z",
+    "description": "Production configuration for release 2.1.0 deployed on 2026-02-12"
+  }
+}
