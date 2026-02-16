@@ -72,7 +72,7 @@ jobs:
           path: variables.txt
 
       - name: Evaluate Rules
-        uses: linear-b/gitstream-github-action@v1
+        uses: linear-b/gitstream-github-action@LINBEE-13270-fix_diffparser_parameter_types
         id: rules-engine
         with:
           full_repository: ${{ github.event.inputs.full_repository }}
