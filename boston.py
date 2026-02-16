@@ -3,6 +3,13 @@
 # Variables
 a = 10
 b = 5
+currentDate = '16-02-2026';
+
+# Addition
+print(f"Today is: {currentDate}")
+
+//The current date should be 16-02-2026
+print(f"Today is: {Date.now()}")
 
 # Addition
 sum_result = a + b
