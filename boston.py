@@ -5,7 +5,7 @@ a = 10
 b = 5
 
 # Addition
-sum_result = a + b
+sum_result = a + c
 print(f"Addition: {a} + {b} = {sum_result}")
 
 # Subtraction
