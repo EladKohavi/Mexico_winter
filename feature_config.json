@@ -1,0 +1,214 @@
+{
+  "environments": {
+    "development": {
+      "feature_flags": {
+        "enhanced_ui": {
+          "enabled": true,
+          "rollout_percentage": 100,
+          "dependencies": [],
+          "mutually_exclusive": ["legacy_mode"],
+          "override_conditions": {
+            "user_groups": ["developers", "qa_team"],
+            "geographic_regions": ["US", "EU"]
+          }
+        },
+        "new_api_v2": {
+          "enabled": true,
+          "rollout_percentage": 75,
+          "dependencies": ["enhanced_ui"],
+          "mutually_exclusive": ["legacy_api"],
+          "configuration_overrides": {
+            "timeout_ms": 5000,
+            "retry_attempts": 3,
+            "enable_caching": true
+          }
+        },
+        "experimental_features": {
+          "enabled": true,
+          "rollout_percentage": 25,
+          "dependencies": ["enhanced_ui", "new_api_v2"],
+          "mutually_exclusive": [],
+          "feature_gates": {
+            "advanced_analytics": true,
+            "ml_predictions": false,
+            "real_time_updates": true
+          }
+        },
+        "legacy_mode": {
+          "enabled": false,
+          "rollout_percentage": 0,
+          "dependencies": [],
+          "mutually_exclusive": ["enhanced_ui", "new_api_v2", "experimental_features"],
+          "deprecation_timeline": "2024-Q4"
+        }
+      },
+      "combination_rules": {
+        "modern_stack": {
+          "required_flags": ["enhanced_ui", "new_api_v2"],
+          "optional_flags": ["experimental_features"],
+          "conflict_resolution": "disable_conflicting"
+        },
+        "legacy_support": {
+          "required_flags": ["legacy_mode"],
+          "optional_flags": [],
+          "conflict_resolution": "force_legacy"
+        }
+      }
+    },
+    "staging": {
+      "feature_flags": {
+        "enhanced_ui": {
+          "enabled": true,
+          "rollout_percentage": 50,
+          "dependencies": [],
+          "mutually_exclusive": ["legacy_mode"],
+          "a_b_test_config": {
+            "variant_a": {
+              "percentage": 25,
+              "config": {"theme": "light", "animations": true}
+            },
+            "variant_b": {
+              "percentage": 25,
+              "config": {"theme": "dark", "animations": false}
+            }
+          }
+        },
+        "new_api_v2": {
+          "enabled": true,
+          "rollout_percentage": 60,
+          "dependencies": ["enhanced_ui"],
+          "mutually_exclusive": ["legacy_api"],
+          "canary_deployment": {
+            "enabled": true,
+            "percentage": 10,
+            "success_criteria": {
+              "error_rate_threshold": 0.01,
+              "latency_p99_threshold": 500
+            }
+          }
+        },
+        "experimental_features": {
+          "enabled": false,
+          "rollout_percentage": 0,
+          "dependencies": ["enhanced_ui", "new_api_v2"],
+          "mutually_exclusive": [],
+          "staging_notes": "Disabled in staging due to instability"
+        },
+        "legacy_mode": {
+          "enabled": true,
+          "rollout_percentage": 40,
+          "dependencies": [],
+          "mutually_exclusive": ["enhanced_ui", "new_api_v2"],
+          "staging_overrides": {
+            "extended_support": true,
+            "migration_tools": true
+          }
+        }
+      }
+    },
+    "production": {
+      "feature_flags": {
+        "enhanced_ui": {
+          "enabled": false,
+          "rollout_percentage": 0,
+          "dependencies": [],
+          "mutually_exclusive": ["legacy_mode"],
+          "production_readiness": "pending_qa_approval",
+          "rollback_plan": "immediate_disable"
+        },
+        "new_api_v2": {
+          "enabled": false,
+          "rollout_percentage": 0,
+          "dependencies": ["enhanced_ui"],
+          "mutually_exclusive": ["legacy_api"],
+          "production_concerns": [
+            "performance_impact_unknown",
+            "backward_compatibility_issues",
+            "monitoring_gaps"
+          ]
+        },
+        "experimental_features": {
+          "enabled": false,
+          "rollout_percentage": 0,
+          "dependencies": ["enhanced_ui", "new_api_v2"],
+          "mutually_exclusive": [],
+          "production_status": "blocked_pending_stability"
+        },
+        "legacy_mode": {
+          "enabled": true,
+          "rollout_percentage": 100,
+          "dependencies": [],
+          "mutually_exclusive": ["enhanced_ui", "new_api_v2", "experimental_features"],
+          "production_notes": "Default stable configuration"
+        }
+      },
+      "safety_mechanisms": {
+        "circuit_breaker": {
+          "enabled": true,
+          "error_threshold": 0.05,
+          "recovery_time_seconds": 300
+        },
+        "automatic_rollback": {
+          "enabled": true,
+          "trigger_conditions": [
+            "error_rate_spike",
+            "latency_degradation",
+            "user_complaints_threshold"
+          ]
+        },
+        "gradual_rollout": {
+          "enabled": true,
+          "phases": [
+            {"percentage": 1, "duration_hours": 2},
+            {"percentage": 5, "duration_hours": 6},
+            {"percentage": 25, "duration_hours": 12},
+            {"percentage": 100, "duration_hours": 24}
+          ]
+        }
+      }
+    }
+  },
+  "global_configuration": {
+    "evaluation_order": [
+      "check_dependencies",
+      "check_mutual_exclusions", 
+      "apply_percentage_rollout",
+      "apply_user_overrides",
+      "apply_environment_overrides"
+    ],
+    "conflict_resolution_strategy": "fail_safe_to_legacy",
+    "logging_configuration": {
+      "log_flag_evaluations": true,
+      "log_combination_conflicts": true,
+      "log_configuration_errors": true,
+      "log_performance_metrics": true
+    },
+    "edge_case_handling": {
+      "undefined_flag_behavior": "default_to_false_with_warning",
+      "circular_dependency_behavior": "break_cycle_at_first_occurrence",
+      "percentage_rollout_without_user_id": "use_random_fallback",
+      "environment_mismatch_behavior": "use_most_restrictive"
+    },
+    "validation_rules": {
+      "max_dependency_depth": 5,
+      "max_combination_size": 10,
+      "required_fields": ["enabled", "rollout_percentage"],
+      "allowed_percentage_range": [0, 100]
+    }
+  },
+  "meta": {
+    "schema_version": "2.1.0",
+    "last_updated": "2024-01-19T10:00:00Z",
+    "configuration_complexity_score": 8.5,
+    "known_edge_cases": [
+      "Circular dependencies in development environment",
+      "Mutual exclusion violations in staging A/B tests",
+      "Production safety override conflicts",
+      "User group membership ambiguity",
+      "Geographic region overlap issues",
+      "Percentage rollout rounding errors",
+      "Dependencies on disabled flags",
+      "Environment-specific configuration drift"
+    ]
+  }
+}
