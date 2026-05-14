@@ -1,7 +1,7 @@
 # Basic Operations in Python
 
 # Variables
-a = 10
+c = 10
 
 # Addition
 sum_result = a + b
