@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`renders foo 1`] = `
-<div>
-  one
-</div>
-`;
