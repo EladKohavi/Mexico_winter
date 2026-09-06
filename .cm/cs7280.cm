@@ -1,0 +1,32 @@
+# -*- mode: yaml -*-
+manifest:
+  version: 1.0
+
+automations:
+  cs7280_show_context:
+    if:
+      - true
+    run:
+      - action: add-comment@v1
+        args:
+          comment: |
+            **CS-7280 repro**
+
+            `files` context:
+            ```
+            {{ files }}
+            ```
+
+            `is.tests` (files | match | every) = **{{ is.tests }}**
+
+  cs7280_tests_only:
+    if:
+      - {{ is.tests }}
+    run:
+      - action: add-label@v1
+        args:
+          label: 'tests-only'
+          color: '0e8a16'
+
+is:
+  tests: {{ files | match(regex=r/(\.(test|spec)(-d)?\.[a-zA-Z]+$|\/__snapshots__\/.+\.snap$|(^|\/)tests?\/)/) | every }}
