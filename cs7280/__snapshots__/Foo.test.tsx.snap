@@ -2,6 +2,6 @@
 
 exports[`renders foo 1`] = `
 <div>
-  one
+  two
 </div>
 `;
